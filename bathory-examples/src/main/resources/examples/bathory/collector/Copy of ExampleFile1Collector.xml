@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<album>
+  <title>Deja Vu</title>
+  <credit>Crosby, Stills, Nash &amp; Young</credit>
+  <songs>
+    <song title="Carry On" writer="Stephen Stills" />
+    <song title="Tech Your Children" writer="Graham Nash" />
+    <song title="Almost Cut My Hair" writer="David Crosby" />
+    <song title="Helpless" writer="Neil Young" />
+    <song title="Woodstock" writer="Joni Mitchell" />
+    <song title="Deja Vu" writer="David Crosby" />
+    <song title="Our House" writer="Graham Nash" />
+    <song title="4 + 20" writer="Stephen Stills" />
+    <song title="Country Girl" writer="Neil Young" />
+    <song title="Everybody I Love You" writer="Stephen Stills, Neil Young" />
+  </songs>
+</album>

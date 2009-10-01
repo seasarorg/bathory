@@ -1,0 +1,10 @@
+#Tue Sep 22 17:33:51 JST 2009
+DaoType=S2Dao
+DefaultResourcePath=/bathory-examples/src/main/resources
+DefaultRootPackage=examples.bathory
+DefaultSrcPath=/bathory-examples/src/main/java
+ServletPath=bathory-examples
+ViewType=None
+WebContentsRoot=src/main/webapp
+eclipse.preferences.version=1
+isUsePublicField=true

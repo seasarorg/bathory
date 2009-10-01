@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<data>
+  <title>XXX company</title>
+  <description>list of XXX company's new employees</description>
+  <employees>
+    <employee empNo="9001" empName="Báthory" mgrId="9" hiredate="08071560" sal="1000" deptId="1"/>
+    <employee empNo="9002" empName="Gilles de Rais" mgrId="9" hiredate="09101404" sal="1000" deptId="1"/>
+    <employee empNo="9003" empName="Vlad III" mgrId="9" hiredate="11101431" sal="1000" deptId="1"/>
+  </employees>
+</data>
