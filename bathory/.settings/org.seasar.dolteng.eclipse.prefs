@@ -1,0 +1,9 @@
+#Mon Sep 21 00:58:04 JST 2009
+DaoType=S2Dao
+DefaultResourcePath=/bathory/src/main/resources
+DefaultRootPackage=bathory
+DefaultSrcPath=/bathory/src/main/java
+ServletPath=bathory
+ViewType=None
+WebContentsRoot=src/main/webapp
+eclipse.preferences.version=1

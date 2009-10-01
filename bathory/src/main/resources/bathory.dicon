@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
+	"http://www.seasar.org/dtd/components24.dtd">
+<components>
+  <component name="savepointInterceptor"        class="org.seasar.bathory.extentions.seasar2.interceptor.SavepointInterceptor"/>
+  <component name="statisticsCommitInterceptor" class="org.seasar.bathory.extentions.seasar2.interceptor.StatisticsCommitInterceptor"/>
+  <component name="statisticsRegistInterceptor" class="org.seasar.bathory.extentions.seasar2.interceptor.StatisticsRegistInterceptor"/>
+
+  <component class="org.seasar.bathory.def.Application" instance="singleton" />
+
+  <component class="org.seasar.bathory.executer.impl.BatchExecuterImpl">
+    <property name="batchInitializer">batchInitializer</property>
+    <property name="batchMain">batchMain</property>
+    <property name="batchTerminator">batchTerminator</property>
+  </component>
+
+  <component name="batchInitializer" class="org.seasar.bathory.executer.impl.BatchInitializerImpl"/>
+  <component name="batchMain"        class="org.seasar.bathory.executer.impl.BatchMainImpl"/>
+  <component name="batchTerminator"  class="org.seasar.bathory.executer.impl.BatchTerminatorImpl"/>
+
+</components>
