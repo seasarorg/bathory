@@ -30,11 +30,12 @@ public class BathoryContext {
     private String consumerName;
     /** 処理開始日時. */
     private Date startDatetime;
-    
+    /** バッチ全体としてロールバックが必要か否か. */
+    private boolean rollbackOnly = false;
     
     
     /** ステータスコード. */
-    private int statusCode = Application.getApplication().getNormalCode();
+    private int statusCode = Application.getApplication().getSuccessCode();
 
     /** ThreadLocal. */
     private static ThreadLocal<BathoryContext> threadLocal = new ThreadLocal<BathoryContext>();
@@ -196,12 +197,8 @@ public class BathoryContext {
     public void setConsumerName(final String name) {
         consumerName = name;
     }
-    
 
-    
-    
-    
-    
+
     /**
      * 処理開始日時を取得します.
      * @return 処理開始日時
@@ -227,6 +224,9 @@ public class BathoryContext {
         if (code > statusCode) {
             statusCode = code;
         }
+        if (code >= Application.getApplication().getRollbackBorder()) {
+            setRollbackOnly();
+        }
     }
 
     /**
@@ -245,5 +245,20 @@ public class BathoryContext {
     /** 例外が発生. */
     public void raizeError() {
         setStatusCode(Application.getApplication().getErrorCode());
+    }
+
+    /**
+     * バッチ全体としてロールバックが必要な状態に変更します.
+     */
+    public void setRollbackOnly() {
+        rollbackOnly = true;
+    }
+
+    /**
+     * バッチ全体としてロールバックが必要な状態かを取得します.
+     * @return バッチ全体としてロールバックが必要か否か
+     */
+    public boolean isRollbackOnly() {
+        return rollbackOnly;
     }
 }

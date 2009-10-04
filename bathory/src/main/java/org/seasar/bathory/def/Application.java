@@ -23,8 +23,8 @@ public class Application {
      * 正常コードを取得します.
      * @return 正常コード
      */
-    public int getNormalCode() {
-        return getIntValue(ApplicationKeys.NORMAL_CODE);
+    public int getSuccessCode() {
+        return getIntValue(ApplicationKeys.SUCESS_CODE);
     }
 
     /**
@@ -41,6 +41,14 @@ public class Application {
      */
     public int getErrorCode() {
         return getIntValue(ApplicationKeys.ERROR_CODE);
+    }
+
+    /**
+     * ロールバックを行う閾値コードを取得します.
+     * @return ロールバックを行う閾値コード
+     */
+    public int getRollbackBorder() {
+        return getIntValue(ApplicationKeys.ROLLBACK_BORDER);
     }
 
     /**

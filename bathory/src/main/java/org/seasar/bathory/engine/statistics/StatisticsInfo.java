@@ -13,10 +13,10 @@ public class StatisticsInfo implements Serializable {
     /** 識別情報. */
     private String identName;
     /** 正常処理件数. */
-    private AtomicLong normalCount = new AtomicLong();
+    private AtomicLong successCount = new AtomicLong();
     /** 警告処理件数. */
     private AtomicLong warningCount = new AtomicLong();
-    /** 例外処理件数. */
+    /** 異常処理件数. */
     private AtomicLong errorCount = new AtomicLong();
     /** 全体処理件数. */
     private AtomicLong executeCount = new AtomicLong();
@@ -49,16 +49,16 @@ public class StatisticsInfo implements Serializable {
      * 正常処理件数を取得します.
      * @return 正常処理件数
      */
-    public long getNormalCount() {
-        return normalCount.longValue();
+    public long getSuccessCount() {
+        return successCount.longValue();
     }
 
     /**
      * 正常処理件数を追加します.
      * @param num 正常処理件数
      */
-    public void addNormalCount(final long num) {
-        normalCount.addAndGet(num);
+    public void addSuccessCount(final long num) {
+        successCount.addAndGet(num);
     }
 
     /**
@@ -78,16 +78,16 @@ public class StatisticsInfo implements Serializable {
     }
 
     /**
-     * 例外処理件数を取得します.
-     * @return 例外処理件数
+     * 異常処理件数を取得します.
+     * @return 異常処理件数
      */
     public long getErrorCount() {
         return errorCount.longValue();
     }
 
     /**
-     * 例外処理件数を追加します.
-     * @param num 例外処理件数
+     * 異常処理件数を追加します.
+     * @param num 異常処理件数
      */
     public void addErrorCount(final long num) {
         errorCount.addAndGet(num);
@@ -109,8 +109,8 @@ public class StatisticsInfo implements Serializable {
     }
 
     /**
-     * 例外処理件数を取得します.
-     * @return 例外処理件数
+     * 全体処理時間を取得します.
+     * @return 全体処理時間
      */
     public long getTotalElapsedTime() {
         return totalElapsedTime.longValue();

@@ -5,7 +5,8 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 import org.seasar.bathory.def.Application;
-import org.seasar.bathory.engine.statistics.StatisticsRecorder;
+import org.seasar.bathory.def.Constants;
+import org.seasar.bathory.engine.statistics.StatisticsRepository;
 import org.seasar.bathory.exception.SystemException;
 
 
@@ -34,7 +35,7 @@ public class Casket {
      */
     public void put(final Map<String, Object> value) {
         try {
-            StatisticsRecorder.addCount("Casket", 1);
+            StatisticsRepository.addCount(Constants.CASKET_IDENT_NAME, 1);
             queue.put(value);
         } catch (InterruptedException e) {
             // 収集が終了していないのにConsumerの処理が中断

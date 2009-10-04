@@ -8,7 +8,7 @@ import org.apache.commons.logging.LogFactory;
 import org.seasar.bathory.def.Application;
 import org.seasar.bathory.engine.BathoryContext;
 import org.seasar.bathory.engine.statistics.StatisticsInfo;
-import org.seasar.bathory.engine.statistics.StatisticsRecorder;
+import org.seasar.bathory.engine.statistics.StatisticsRepository;
 import org.seasar.bathory.executer.BatchExecuter;
 import org.seasar.bathory.executer.BatchInitializer;
 import org.seasar.bathory.executer.BatchMain;
@@ -46,6 +46,7 @@ public class BatchExecuterImpl extends BaseBatch implements BatchExecuter {
     public void setBatchMain(final BatchMain batchMain) {
         this.main = batchMain;
     }
+
     /**
      * BatchTerminatorを設定します.
      * @param batchTerminator BatchTerminator
@@ -53,6 +54,7 @@ public class BatchExecuterImpl extends BaseBatch implements BatchExecuter {
     public void setBatchTerminator(final BatchTerminator batchTerminator) {
         this.terminator = batchTerminator;
     }
+
     /**
      * バッチ処理を実行します.
      * @param context BathoryContext
@@ -68,13 +70,14 @@ public class BatchExecuterImpl extends BaseBatch implements BatchExecuter {
        int statusCode = context.getStatusCode();
        return statusCode;
     }
+
     /**
      * バッチ処理を実行します.
      * @param context BathoryContext
      */
     private void runImpl(final BathoryContext context) {
         initializer.initialize();
-        if (context.getStatusCode() != Application.getApplication().getNormalCode()) {
+        if (context.getStatusCode() != Application.getApplication().getSuccessCode()) {
             return;
         }
         main.main();
@@ -85,9 +88,8 @@ public class BatchExecuterImpl extends BaseBatch implements BatchExecuter {
      * 事後ログを出力します.
      */
     private void afterLog() {
-        BathoryContext context = BathoryContext.getCurrentInstance();
         Map<String, StatisticsInfo> statisticInfoMap =
-                    StatisticsRecorder.getStatisticsMap().get(context.getIdentName());
+                        StatisticsRepository.getCurrentStatisticsMap();
         if (statisticInfoMap != null) {
             for (Iterator<StatisticsInfo> it = statisticInfoMap.values().iterator();
                  it.hasNext();) {
@@ -95,15 +97,17 @@ public class BatchExecuterImpl extends BaseBatch implements BatchExecuter {
                 String message = BathoryMessageUtil.getMessage(
                                           "IBAT0001",
                                           statisticsInfo.getIdentName(),
-                                          String.valueOf(statisticsInfo.getNormalCount()),
+                                          String.valueOf(statisticsInfo.getSuccessCount()),
                                           String.valueOf(statisticsInfo.getWarnCount()),
                                           String.valueOf(statisticsInfo.getErrorCount()),
                                           String.valueOf(statisticsInfo.getExecuteCount()),
                                           String.valueOf(statisticsInfo.getTotalElapsedTime())
-                                          );
-            LOG.debug(message);
+                                      
+                );
+                LOG.debug(message);
             }
         }
+        BathoryContext context = BathoryContext.getCurrentInstance();
         int statusCode = context.getStatusCode();
         LOG.debug("status code : " + statusCode);
     }

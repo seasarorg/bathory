@@ -5,7 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.aopalliance.intercept.MethodInvocation;
-import org.seasar.bathory.engine.statistics.StatisticsRecorder;
+import org.seasar.bathory.engine.statistics.StatisticsRepository;
 import org.seasar.framework.aop.interceptors.AbstractInterceptor;
 
 
@@ -30,23 +30,22 @@ public class StatisticsRegistInterceptor extends AbstractInterceptor  {
             return invocation.proceed();
         }
 
-
         long before      = System.currentTimeMillis();
         Object ret       = null;
         String identName = getIdentString(invocation);
         try {
             ret = invocation.proceed();
             int count = getCount(ret);
-            StatisticsRecorder.addCount(identName, count);
+            StatisticsRepository.addCount(identName, count);
             return ret;
         } catch (Throwable t) {
             // エラー時はデフォルトで１を追加する
             int count = 1;
-            StatisticsRecorder.addCount(identName, count);
+            StatisticsRepository.addCount(identName, count);
             throw t;
         } finally {
             long after = System.currentTimeMillis();
-            StatisticsRecorder.elapse(identName, after - before);
+            StatisticsRepository.elapse(identName, after - before);
         }
     }
 

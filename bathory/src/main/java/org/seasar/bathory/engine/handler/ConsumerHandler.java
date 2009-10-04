@@ -37,7 +37,11 @@ public class ConsumerHandler extends BaseHandler {
         try {
             main();
             try {
-                ut.commit();
+                if (getContext().isRollbackOnly()) {
+                    ut.rollback();
+                } else {
+                    ut.commit();
+                }
             } catch (Exception e) {
                 // String message = "コミットに失敗しました";
                 throw new SystemException(e);
@@ -55,6 +59,7 @@ public class ConsumerHandler extends BaseHandler {
             throw new SystemException(e);
         }
     }
+
     /**
      * メイン処理.
      */
@@ -63,6 +68,9 @@ public class ConsumerHandler extends BaseHandler {
         while (!isEnded) {
             Map<String, Object> values = getCasket().consume();
             if (Constants.END_OF_DATA.equals(values)) {
+                isEnded = true;
+            } else if (getContext().isRollbackOnly()) {
+                // 全体にロールバックが必要な場合は処理を中断する
                 isEnded = true;
             } else  {
                 if (values != null) {

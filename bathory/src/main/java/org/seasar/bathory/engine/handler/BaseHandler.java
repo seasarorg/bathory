@@ -50,7 +50,6 @@ public abstract class BaseHandler extends Thread {
         }
     }
 
-
     /**
      * 戻り値を取得します.
      * @return 戻り値
@@ -108,6 +107,5 @@ public abstract class BaseHandler extends Thread {
                 context.raizeError();
             }
         }
-        
     }
 }

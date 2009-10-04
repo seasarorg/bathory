@@ -1,7 +1,7 @@
 package org.seasar.bathory.extentions.seasar2.interceptor;
 
 import org.aopalliance.intercept.MethodInvocation;
-import org.seasar.bathory.engine.statistics.StatisticsRecorder;
+import org.seasar.bathory.engine.statistics.StatisticsRepository;
 import org.seasar.bathory.exception.RecoverableException;
 import org.seasar.framework.aop.interceptors.AbstractInterceptor;
 
@@ -23,13 +23,13 @@ public class StatisticsCommitInterceptor extends AbstractInterceptor  {
     public Object invoke(final MethodInvocation invocation) throws Throwable {
         try {
             Object ret = invocation.proceed();
-            StatisticsRecorder.markAsNormal();
+            StatisticsRepository.markAsSuccess();
             return ret;
         } catch (RecoverableException e) {
-            StatisticsRecorder.markAsWarn();
+            StatisticsRepository.markAsWarn();
             throw e;
         } catch (Throwable t) {
-            StatisticsRecorder.markAsError();
+            StatisticsRepository.markAsError();
             throw t;
         }
     }

@@ -21,7 +21,9 @@ public class Constants {
     /** デフォルトのアプリケーション設定ファイル名. */
     public static final String DEFAULT_APPSTTING_FILE = "BATApplicationSetting";
     /** カスタムのアプリケーション設定ファイル名. */
-    public static final String CUSTOM_APPSTTING_FILE = "BATApplicationSetting";
+    public static final String CUSTOM_APPSTTING_FILE = "BATSetting";
+    /** Casketの識別名. */
+    public static final String CASKET_IDENT_NAME = "Casket";
 
     /**
      * Contextのキー情報.
@@ -56,11 +58,13 @@ public class Constants {
      */
     public static final class ApplicationKeys {
         /** 正常コード. */
-        public static final String NORMAL_CODE = "normalCode";
+        public static final String SUCESS_CODE = "successCode";
         /** 警告コード. */
         public static final String WARN_CODE = "warnCode";
         /** 例外コード. */
         public static final String ERROR_CODE = "errorCode";
+        /** ロールバックを行う閾値コード. */
+        public static final String ROLLBACK_BORDER = "rollbackBorder";
         /** Queueサイズ. */
         public static final String QUEUE_SIZE = "queueSize";
         /** 通常の並列度. */

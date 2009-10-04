@@ -11,10 +11,10 @@ import org.seasar.framework.util.SerializeUtil;
 
 
 /**
- * 統計情報のためのユーティリティクラス.
+ * 統計情報を収集するためのクラス.
  * @author toyokazu
  */
-public class StatisticsRecorder {
+public class StatisticsRepository {
 
     /** ThreadLocal. */
     private static ThreadLocal<Map<String, TempStatisticsInfo>> threadLocal
@@ -23,12 +23,12 @@ public class StatisticsRecorder {
     private static Map<String, Map<String, StatisticsInfo>> statisticsMap
                     = new HashMap<String, Map<String, StatisticsInfo>>();
     /** 追加種別. */
-    private enum ADD_TYPE { NORMAL, WARN, ERROR };
+    private enum ADD_TYPE { SUCCESS, WARN, ERROR };
     
     /**
      * インスタンス化禁止.
      */
-    private StatisticsRecorder() {
+    private StatisticsRepository() {
     }
 
     /**
@@ -65,8 +65,8 @@ public class StatisticsRecorder {
     /**
      * 処理件数を正常処理件数として計上します.
      */
-    public static void markAsNormal() {
-        markImpl(ADD_TYPE.NORMAL);
+    public static void markAsSuccess() {
+        markImpl(ADD_TYPE.SUCCESS);
     }
 
     /**
@@ -96,6 +96,24 @@ public class StatisticsRecorder {
     }
 
     /**
+     * 統計情報を取得します.
+     * @param identName 識別名
+     * @return 統計情報
+     */
+    public static Map<String, StatisticsInfo> getStatisticsMap(final String identName) {
+        return getStatisticsMap().get(identName);
+    }
+
+    /**
+     * 現在実行中の統計情報を取得します.
+     * @return 統計情報
+     */
+    public static Map<String, StatisticsInfo> getCurrentStatisticsMap() {
+        BathoryContext context = BathoryContext.getCurrentInstance();
+        return getStatisticsMap(context.getIdentName());
+    }
+
+    /**
      * 計上処理実装メソッド.
      * @param addType 追加種別
      */
@@ -114,8 +132,8 @@ public class StatisticsRecorder {
             TempStatisticsInfo value = entry.getValue();
             StatisticsInfo info = getStatisticsInfo(key, infoMap);
             switch (addType) {
-            case NORMAL:
-                info.addNormalCount(value.getCount());
+            case SUCCESS:
+                info.addSuccessCount(value.getCount());
                 break;
             case WARN:
                 info.addWarnCount(value.getCount());
