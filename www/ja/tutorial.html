@@ -87,9 +87,228 @@
 
 <div class="section">
 
-<h2></h2>
+<h2>チュートリアル</h2>
+<p><a href="http://bathory.sandbox.seasar.org/ja/setup.html">チュートリアルのセットアップ</a>にしたがって環境を構築してください。
+バッチアプリケーションは、アプリケーションサーバが必要ありませんので、Seasarの設定をして、DBサーバを起動すれば完了です。
+DBサーバの起動に関しては<a href="http://teeda.seasar.org/ja/extension/firststep/index.html">H2_Database_Engineの起動</a>等を参考にしてください。
+</p>
 
-<p></p>
+<h2>hello world</h2>
+<p>まずは、hello worldアプリケーションを作成してみましょう。</p>
+
+<h3>Collectorの作成</h3>
+<p>bathroyフレームワークを利用してバッチアプリケーションを作成する際は、Collectorというクラスを作成します。
+このクラスは、データを取得するためのクラスです。
+以下の制約にしたがって作成してください。
+</p>
+<ul>
+	<li>${rootPackage}/collectorパッケージ以下に作成してください。</li>
+	<li>org.seasar.bathory.engine.Collectorを実装してください。</li>
+	<li>クラス名をCollectorで終わらせてください。</li>
+</ul>
+<div class="source"><pre>
+package examples.bathory.collector;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.seasar.bathory.engine.Casket;
+import org.seasar.bathory.engine.Collector;
+
+public class HelloWorldCollector implements Collector {
+    @Override
+    public void collect(final Casket casket) {
+        Map<String, Object> value = new HashMap<String, Object>();
+        value.put("sysout", "hello world!");
+
+        casket.put(value);
+    }
+}
+</pre></div>
+<p>Collectorは、データを収集することが目的のクラスなので、Casketへデータを1件格納しています。
+</p>
+
+<h3>Consumerの作成</h3>
+<p>次に、収集したデータを処理するクラスを作成します。
+bathoryフレームワークでは、このようなクラスのことをConsumerと呼んでいます。
+以下の制約にしたがって作成してください。
+</p>
+<ul>
+	<li>${rootPackage}/consumerパッケージ以下に作成してください。</li>
+	<li>org.seasar.bathory.engine.Consumerを実装してください。</li>
+	<li>クラス名をConsumerで終わらせてください。</li>
+</ul>
+<p>なお、CollectorとConsumerを紐付けるため、クラス名の前半部分は同一のものにしてください。</p>
+<p>例）<br />
+AaaCollector<br />
+の場合は<br />
+AaaConsumer<br />
+
+今回の場合は、HellowWorldCollectorなので、HelloWorldConsumer
+<div class="source"><pre>
+package examples.bathory.consumer;
+
+import org.seasar.bathory.engine.Consumer;
+
+public class HelloWorldConsumer implements Consumer {
+
+    public String sysout;
+
+    @Override
+    public void consume() {
+        System.out.println(sysout);
+    }
+}
+</pre></div>
+<p>これで準備は完了です。</p>
+
+<h3>hello world実行</h3>
+<p>では、実行してみましょう。
+Eclipseのメニュー[Run]=>[Debug Configurations...]=>Java Application=>New
+を選択して、Debugの構成を表示してください。
+</p>
+<p>mainタブでは、以下の三点を設定してください。</p>
+<ul>
+	<li>Name:何でもかまわないですが、有意な名称を付与してください。</li>
+	<li>project:対象のプロジェクトを指定してください。</li>
+	<li>Main class:"org.seasar.bathory.executer.SimpleCommandExecutor"を指定してください。</li>
+</ul>
+<img src="images/tutorial/hellow_world_01.png" alt="Debug構成その1"/>
+<p>Argumentsタブでは、VM argumentsへ以下の二点を設定してください。</p>
+<ul>
+	<li>jobId:何でもかまわないですが、有意な名称を付与してください。</li>
+	<li>batchId:Collector,Consumerのクラス名共通部分を先頭小文字にした文字列を指定してください。（ここでは、helloWorld）</li>
+</ul>
+<img src="images/tutorial/hellow_world_02.png" alt="Debug構成その2"/>
+<p>簡単に実行できましたね。</p>
+<h3>hello worldまとめ</h3>
+<p>ポイントは以下のとおりです。</p>
+<ul>
+	<li>Collectorは、引数に渡されたCasketへデータをMap形式にしてデータを追加します。</li>
+	<li>Consumerは、Casketに追加した名称のフィールドに値が格納され、consumeメソッドが呼び出されます。consumeメソッドには、仕様に応じた処理を記述します。</li>
+</ul>
+
+<h2>S2Daoを使用した例</h2>
+<p>S2Daoを利用したサンプルを作成してみましょう。
+Collectorは通常のオンラインアプリケーションと大きな差異があります。
+</p>
+
+<h3>Daoの作成</h3>
+<p>S2Daoには<a href="http://s2dao.seasar.org/ja/s2dao-tiger.html#FetchHandler">FetchHandler</a>という機能があります。
+この機能を利用します。</p>
+
+<div class="source"><pre>
+package examples.bathory.dao;
+
+import org.seasar.bathory.extentions.s2dao.FetchHandlerAdapter;
+import org.seasar.dao.annotation.tiger.Arguments;
+import org.seasar.dao.annotation.tiger.SqlFile;
+
+public interface S2DaoExample1Dao {
+    @SqlFile
+    @Arguments("targetDate")
+    public void selectRecentHistory(String date, FetchHandlerAdapter adapter);
+}
+</pre></div>
+
+<div class="source"><pre>
+SELECT *
+FROM emp
+WHERE hiredate > PARSEDATETIME(/*targetDate*/'19810131', 'yyyyMMdd')
+</pre></div>
+<p>メソッドの二番目にFetchHandlerAdapterを指定しているところがポイントです。</p>
+
+<h3>Collectorの作成</h3>
+<p>S2Daoを使用したCollectorは以下のようになります。</p>
+<div class="source"><pre>
+package examples.bathory.collector;
+
+import org.seasar.bathory.engine.Casket;
+import org.seasar.bathory.engine.Collector;
+import org.seasar.bathory.extentions.s2dao.FetchHandlerAdapter;
+
+import examples.bathory.dao.S2DaoExample1Dao;
+
+public class S2DaoExample1Collector implements Collector {
+    public S2DaoExample1Dao dao;
+
+    @Override
+    public void collect(final Casket casket) {
+        String date = "19810131";
+        dao.selectRecentHistory(date, new FetchHandlerAdapter(casket));
+    }
+}
+</pre></div>
+<p>メソッドの二番目にFetchHandlerAdapterを指定しているところ以外は通常のS2Daoを使用したアプリケーションと変わりありません。
+この記述だけで内部的には以下のことを行います。
+</p>
+<ul>
+	<li>検索結果をMapに格納してcasketに引き渡す。</li>
+	<li>検索結果はcasketを通じてConsumerへ引き渡される。</li>
+</ul>
+
+<h3>Consumerの作成</h3>
+<p>Consumerでは、処理対象データ一件に対する業務処理を記述します。</p>
+<div class="source"><pre>
+package examples.bathory.consumer;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.Random;
+
+import org.seasar.bathory.engine.Consumer;
+import org.seasar.framework.beans.util.BeanUtil;
+
+import examples.bathory.dao.EmpDao;
+import examples.bathory.entity.Emp;
+
+public class S2DaoExample1Consumer implements Consumer {
+
+    public Long id;
+    public Integer empNo;
+    public String empName;
+    public Integer mgrId;
+    public Date hiredate;
+    public BigDecimal sal;
+    public Integer deptId;
+    public Integer versionNo;
+
+    public EmpDao dao;
+    @Override
+    public void consume() {
+        // 自分自身に値が格納されているので、処理を行う。
+        Emp data = new Emp();
+        BeanUtil.copyProperties(this, data);
+        
+        // 業務処理を記述していく
+        // 以下は仮想的な業務処理
+        int rand = new Random(System.currentTimeMillis()).nextInt(100);
+        if (rand % 5 == 0) {
+            // 減給もアリ
+            rand *= -1;
+        }
+        BigDecimal diff = BigDecimal.valueOf(rand);
+        data.sal = (data.sal.add(diff));
+
+        dao.update(data);
+    }
+}
+</pre></div>
+<p>ConsumerはSAStrutsのActionやTeedaのPageクラスのように処理を記述してください。
+もちろんServiceクラスやLogicクラスに処理を切り出しても問題ありません。
+</p>
+
+<h3>実行</h3>
+<p>先ほどと同様に、新たにDebug Configurationを作成して実行してください。</p>
+
+
+
+<h2>S2JDBCを使用した例</h2>
+<p>S2JDBCには<a href="http://s2container.seasar.org/2.4/ja/s2jdbc_tutorial.html#イテレーション">IterationCallback</a>という機能があります。
+この機能を利用します。</p>
+
+
+TBD
 
 </div><!-- section -->
 
