@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta http-equiv="Content-Language" content="ja" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta name="keywords" content="bathory, Seasar, The Seasar Project, The Seasar Foundation, OSS, Open Source Software, Java, Batch, Framework" />
+<meta name="description" content="bathory" />
+<title>bathoryとは</title>
+<link rel="stylesheet" type="text/css" href="http://www.seasar.org/theme/main.css" media="screen,projection" />
+<link rel="stylesheet" type="text/css" href="http://www.seasar.org/theme/print.css" media="print" />
+</head>
+
+<body>
+
+<div id="wrapper">
+
+<div id="header">
+
+<div class="line"><span class="hide">spacer</span></div>
+
+<div id="logo"><h2 id="h01" class="hide">The Seasar Foundation Project Site</h2><img src="http://www.seasar.org/images/seasar_logo_blue.gif" alt="The Seasar Project" width="390" height="180" /></div>
+
+<div id="tool">
+
+<h2><a href="http://search.seasar.org/">Site Search</a></h2>
+
+<form id="search" name="search" action="http://search.seasar.org/">
+<div>
+	<input id="search_phrase" type="text" name="phrase" size="20" />
+	<input type="hidden" name="perpage" value="30" />
+	<input type="hidden" name="enc" value="UTF-8" />
+	<input id="search_go" type="submit" value="Search" />
+</div>
+</form>
+
+<h2>Seasar Banner</h2>
+
+<p><a href="http://www.seasar.org/images/seasar_banner.gif"><img src="http://www.seasar.org/images/seasar_banner.gif" alt="Seasar Banner" title="Seasar Banner" width="146" height="33" /></a></p>
+
+</div>
+
+</div><!-- header -->
+
+
+<div id="contents_left">
+
+
+<h2>Menu</h2>
+<ul>
+	<li><a href="http://bathory.sandbox.seasar.org/ja/index.html">ホーム</a></li>
+</ul>
+<ul>
+	<li><a href="http://bathory.sandbox.seasar.org/ja/concept.html">概要</a></li>
+</ul>
+<ul>
+	<li><a href="http://bathory.sandbox.seasar.org/ja/tutorial.html">チュートリアル </a></li>
+</ul>
+<ul>
+	<li><a href="http://bathory.sandbox.seasar.org/ja/featureReference.html">機能リファレンス</a></li>
+</ul>
+<ul>
+	<li><a href="http://bathory.sandbox.seasar.org/ja/settingReference.html">設定ファイルリファレンス</a></li>
+</ul>
+<ul>
+	<li><a href="http://bathory.sandbox.seasar.org/ja/setup.html">実行環境のセットアップ</a></li>
+</ul>
+<ul>
+	<li><a href="http://bathory.sandbox.seasar.org/ja/releaseNotes.html">リリースノート</a></li>
+</ul>
+<ul>
+	<li><a href="http://bathory.sandbox.seasar.org/ja/roadmap.html">ロードマップ</a></li>
+</ul>
+<ul>
+	<li><a href="https://www.seasar.org/svn/sandbox/bathory/trunk/bathory">SVN リポジトリブラウザ</a></li>
+</ul>
+
+
+
+</div><!-- contents_left -->
+
+
+<div id="contents_center">
+
+<div id="article">
+
+<div class="section">
+
+<h2>bathoryとは</h2>
+<p></p>
+
+<h2>概要</h2>
+<p>bathroyは、SAStrutsやTeedaでオンラインアプリケーションを開発するようにバッチアプリケーションを開発することを目標として作成されたバッチフレームワークです。
+</p>
+
+<h2>バッチアプリケーションの特徴</h2>
+<p>バッチアプリケーションは、オンラインアプリケーションといくつかの点で相違があります。
+以下に相違点とbathoryフレームワークがどのような問題点に対しての機能を用意しているかの紹介をします。
+</p>
+<p>バッチアプリケーションは、オンラインアプリケーションと比べて処理対象データが巨大になる傾向があります。
+そのため、バッチアプリケーションは巨大なデータを扱うことを意識することが必要です。
+</p>
+
+<h3>フェッチ戦略</h3>
+<p>ある条件に合致したデータを取得して、結果に対して一件ずつ処理を行っていくことを考えて見ましょう。
+S2JDBCで書くと以下のようになると思います。</p>
+<div class="source"><pre>
+List&lt;Employee&gt; results = jdbcManager.from(Employee.class)
+                             .join(&quot;department&quot;)
+                             .where(&quot;id in (? , ?)&quot;, 11, 22)
+                             .orderBy(&quot;name&quot;)
+                             .getResultList();
+for (Employee employee : results) {
+    // do something
+}
+</pre></div>
+<p>ここで、resultsの件数を考えてください。
+通常のオンラインアプリケーションだと多くても数百件オーダであることが大半です。</p>
+<p>これがバッチアプリケーションでは、結果が数十万・数百万件となる場合があります。
+バッチアプリケーションで、上記のようなコードを記述した場合以下の問題が起きます</p>
+<ul>
+	<li>全件フェッチしてからでないと処理が行えない。</li>
+	<li>全件フェッチするためOutOfMemoryErrorが発生する可能性がある。</li>
+</ul>
+<p>bathoryでバッチアプリケーションを構築する場合は、上記問題を考慮する必要がありません。</p>
+<!-- TODO リンクを張る -->
+
+<h3>トランザクションの戦略</h3>
+<p>オンラインアプリケーションは、1リクエストに対して1トランザクションとすることが多いと思います。
+アクションやページの処理開始時にトランザクションを開始、正常終了ならコミット、異常終了ならロールバックしていると思います。</p>
+<p>バッチアプリケーションでは、処理対象が大量データのため、もう少し複雑なトランザクションが必要になります。
+以下のような機能を持つバッチアプリケーションを想像してください。
+</p>
+<div class="source"><pre>
+List&lt;Employee&gt; results = jdbcManager.from(Employee.class)
+                             .join(&quot;department&quot;)
+                             .where(&quot;id in (? , ?)&quot;, 11, 22)
+                             .orderBy(&quot;name&quot;)
+                             .getResultList();
+for (Employee employee : results) {
+	// 社員権限テーブルの更新(1)
+ 	 ・・・・・・・
+	// 社員テーブルの更新(2)
+	・・・・・・・
+}
+</pre></div>
+<p>バッチアプリケーションは対象データが数百万件・処理時間は数時間かかる場合があります。
+そのようなアプリケーションにて、最後1件の(2)部分でエラーとなった場合以下のような理由で単純なロールバックはできません。
+</p>
+<ul>
+	<li>ロールバック実行に膨大な時間がかかる。</li>
+	<li>再入に再度数時間かかってしまう。</li>
+</ul>
+<p>bathoryではバッチアプリケーション特有のトランザクションを実現するため、以下の機能を用意しています。
+（＆用意する予定です。）
+</p>
+<ul>
+	<li>セーブポイント</li>
+	<li>分割コミット</li>
+	<li>リトライ</li>
+	<li>リラン</li>
+</ul>
+<!-- TODO リンクを張る -->
+
+<h3>並列性の戦略</h3>
+<p>オンラインアプリケーションは、1リクエストに対して1スレッドになることが多いと思います。
+それは、複雑さが増すというデメリットの割りに得られるメリットが少ないからだと思います。</p>
+<p>しかし、バッチアプリケーションでマルチスレッドを使用して大量のデータを効率的に処理可能です。
+bathoryでは、並列実行を容易に実現するための機能を用意しています。</p>
+<!-- TODO リンクを張る -->
+
+
+
+
+
+
+</div><!-- section -->
+
+</div><!-- article -->
+
+</div><!-- contents_center -->
+
+<div id="footer">
+<address>&copy; Copyright The Seasar Foundation and the others 2009, all rights reserved.</address>
+<div class="line"><span class="hide">spacer</span></div>
+</div><!-- footer -->
+
+</div><!-- wrapper -->
+
+</body>
+</html>
+
