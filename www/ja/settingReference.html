@@ -87,10 +87,480 @@
 
 <div class="section">
 
-<h2>作成中</h2>
-<p>申し訳ありません。現在鋭意製作中です.<br /></p>
-<p></p>
+<h2>セットアップ</h2>
 
+
+
+<h3>チュートリアルのセットアップ</h3>
+<p>TBD</p>
+
+<h3>ブランクのセットアップ（共通）</h3>
+<p>プロジェクトの雛形は、DoltengというEclipseのプラグインを使って作成します。 Doltengのインストールは<a href="http://dolteng.sandbox.seasar.org/#Setup">こちら</a>を参照してください。</p>
+<p>Doltengでプロジェクトを作成すると、デフォルトのデータベースとして、H2がインストールされます。 H2でとりあえず試してみたい場合はDbLauncherをTomcat Launcherと同じように、 インストールしてください。</p>
+<p>Doltengの設定を確認します。 「Window」-「Preferences」でDoltengの設定ダイアログを開いてください。 Maven2を使わない場合は、Download resources from onlineのチェックボックスをオフにします。 Maven2を使う場合は、Maven Repository Pathを設定してください。</p>
+<p>プロジェクトの作成は、<a href="http://dolteng.sandbox.seasar.org/usage.html#project-wizard">こちら</a>を参照してください。 Application Typeには「Standard Application」Persistenceには「S2JDBC」もしくは「S2Dao」を選択してください。</p>
+
+
+
+<h3>ブランクのセットアップ（S2JDBC）</h3>
+<p>以下のようなbathory特有の設定を行います。</p>
+
+
+<h4>app.dicon</h4>
+<p>生成直後。</p>
+
+<div class="source"><pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE components PUBLIC &quot;-//SEASAR//DTD S2Container 2.4//EN&quot; 
+	&quot;http://www.seasar.org/dtd/components24.dtd&quot;&gt;
+&lt;components&gt;
+  &lt;include path=&quot;convention.dicon&quot;/&gt;
+  &lt;include path=&quot;aop.dicon&quot;/&gt;
+  &lt;include path=&quot;s2jdbc.dicon&quot;/&gt;
+&lt;/components&gt;
+</pre></div>
+
+<p>変換後。</p>
+<div class="source"><pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE components PUBLIC &quot;-//SEASAR//DTD S2Container 2.4//EN&quot; 
+	&quot;http://www.seasar.org/dtd/components24.dtd&quot;&gt;
+&lt;components&gt;
+  &lt;include path=&quot;convention.dicon&quot;/&gt;
+  &lt;include path=&quot;aop.dicon&quot;/&gt;
+  &lt;include path=&quot;s2jdbc.dicon&quot;/&gt;
+
+&lt;!-- for bathory --&gt;
+  &lt;include path=&quot;bathory.dicon&quot;/&gt;
+&lt;!-- for bathory --&gt;
+
+&lt;/components&gt;
+</pre></div>
+
+
+<h4>creator.dicon</h4>
+<p>生成直後。</p>
+
+<div class="source"><pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE components PUBLIC &quot;-//SEASAR//DTD S2Container 2.4//EN&quot; 
+	&quot;http://www.seasar.org/dtd/components24.dtd&quot;&gt;
+&lt;components&gt;
+  &lt;include path=&quot;customizer.dicon&quot;/&gt;
+  &lt;include path=&quot;convention.dicon&quot;/&gt;
+  &lt;component name=&quot;actionCreator&quot; class=&quot;org.seasar.framework.container.creator.ActionCreator&quot;/&gt;
+  &lt;component name=&quot;converterCreator&quot; class=&quot;org.seasar.framework.container.creator.ConverterCreator&quot;/&gt;
+  &lt;component name=&quot;daoCreator&quot; class=&quot;org.seasar.framework.container.creator.DaoCreator&quot;/&gt;
+  &lt;component name=&quot;dtoCreator&quot; class=&quot;org.seasar.framework.container.creator.DtoCreator&quot;/&gt;
+  &lt;component name=&quot;dxoCreator&quot; class=&quot;org.seasar.framework.container.creator.DxoCreator&quot;/&gt;
+  &lt;component name=&quot;helperCreator&quot; class=&quot;org.seasar.framework.container.creator.HelperCreator&quot;/&gt;
+  &lt;component name=&quot;interceptorCreator&quot; class=&quot;org.seasar.framework.container.creator.InterceptorCreator&quot;/&gt;
+  &lt;component name=&quot;logicCreator&quot; class=&quot;org.seasar.framework.container.creator.LogicCreator&quot;/&gt;
+  &lt;component name=&quot;pageCreator&quot; class=&quot;org.seasar.framework.container.creator.PageCreator&quot;/&gt;
+  &lt;component name=&quot;serviceCreator&quot; class=&quot;org.seasar.framework.container.creator.ServiceCreator&quot;/&gt;
+  &lt;component name=&quot;validatorCreator&quot; class=&quot;org.seasar.framework.container.creator.ValidatorCreator&quot;/&gt;
+&lt;/components&gt;
+</pre></div>
+
+<p>変換後。</p>
+<div class="source"><pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE components PUBLIC &quot;-//SEASAR//DTD S2Container 2.4//EN&quot; 
+	&quot;http://www.seasar.org/dtd/components24.dtd&quot;&gt;
+&lt;components&gt;
+  &lt;include path=&quot;customizer.dicon&quot;/&gt;
+  &lt;include path=&quot;convention.dicon&quot;/&gt;
+  &lt;component name=&quot;actionCreator&quot; class=&quot;org.seasar.framework.container.creator.ActionCreator&quot;/&gt;
+  &lt;component name=&quot;converterCreator&quot; class=&quot;org.seasar.framework.container.creator.ConverterCreator&quot;/&gt;
+  &lt;component name=&quot;daoCreator&quot; class=&quot;org.seasar.framework.container.creator.DaoCreator&quot;/&gt;
+  &lt;component name=&quot;dtoCreator&quot; class=&quot;org.seasar.framework.container.creator.DtoCreator&quot;/&gt;
+  &lt;component name=&quot;dxoCreator&quot; class=&quot;org.seasar.framework.container.creator.DxoCreator&quot;/&gt;
+  &lt;component name=&quot;helperCreator&quot; class=&quot;org.seasar.framework.container.creator.HelperCreator&quot;/&gt;
+  &lt;component name=&quot;interceptorCreator&quot; class=&quot;org.seasar.framework.container.creator.InterceptorCreator&quot;/&gt;
+  &lt;component name=&quot;logicCreator&quot; class=&quot;org.seasar.framework.container.creator.LogicCreator&quot;/&gt;
+  &lt;component name=&quot;pageCreator&quot; class=&quot;org.seasar.framework.container.creator.PageCreator&quot;/&gt;
+  &lt;component name=&quot;serviceCreator&quot; class=&quot;org.seasar.framework.container.creator.ServiceCreator&quot;/&gt;
+  &lt;component name=&quot;validatorCreator&quot; class=&quot;org.seasar.framework.container.creator.ValidatorCreator&quot;/&gt;
+&lt;!-- for bathory --&gt;
+  &lt;component name=&quot;collectorCreator&quot; class=&quot;org.seasar.bathory.extentions.seasar2.creator.CollectorCreator&quot;/&gt;
+  &lt;component name=&quot;consumerCreator&quot; class=&quot;org.seasar.bathory.extentions.seasar2.creator.ConsumerCreator&quot;/&gt;
+&lt;!-- for bathory --&gt;
+&lt;/components&gt;
+</pre></div>
+
+
+<h4>customizer.dicon</h4>
+<p>生成直後。</p>
+
+<div class="source"><pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE components PUBLIC &quot;-//SEASAR//DTD S2Container 2.4//EN&quot; 
+	&quot;http://www.seasar.org/dtd/components24.dtd&quot;&gt;
+&lt;components&gt;
+  &lt;include path=&quot;default-customizer.dicon&quot;/&gt;
+&lt;/components&gt;
+</pre></div>
+
+<p>変換後。</p>
+<div class="source"><pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE components PUBLIC &quot;-//SEASAR//DTD S2Container 2.4//EN&quot; 
+	&quot;http://www.seasar.org/dtd/components24.dtd&quot;&gt;
+&lt;components&gt;
+  &lt;include path=&quot;default-customizer.dicon&quot;/&gt;
+
+&lt;!-- for bathory --&gt;
+  &lt;component name=&quot;collectorCustomizer&quot; class=&quot;org.seasar.framework.container.customizer.CustomizerChain&quot;&gt;
+    &lt;initMethod name=&quot;addCustomizer&quot;&gt;
+      &lt;arg&gt;traceCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+    &lt;initMethod name=&quot;addCustomizer&quot;&gt;
+      &lt;arg&gt;statisticsCommitCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+    &lt;initMethod name=&quot;addCustomizer&quot;&gt;
+      &lt;arg&gt;requiredTxCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+  &lt;/component&gt;
+  &lt;component name=&quot;consumerCustomizer&quot; class=&quot;org.seasar.framework.container.customizer.CustomizerChain&quot;&gt;
+    &lt;initMethod name=&quot;addCustomizer&quot;&gt;
+      &lt;arg&gt;traceCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+    &lt;initMethod name=&quot;addCustomizer&quot;&gt;
+      &lt;arg&gt;requiredTxCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+    &lt;initMethod name=&quot;addCustomizer&quot;&gt;
+      &lt;arg&gt;
+        &lt;component class=&quot;org.seasar.framework.container.customizer.AspectCustomizer&quot;&gt;
+          &lt;initMethod name=&quot;addInterceptorName&quot;&gt;
+            &lt;arg&gt;&quot;savepointInterceptor&quot;&lt;/arg&gt;
+          &lt;/initMethod&gt;
+          &lt;property name=&quot;pointcut&quot;&gt;&quot;consume&quot;&lt;/property&gt;
+        &lt;/component&gt;
+      &lt;/arg&gt;
+    &lt;/initMethod&gt;
+    &lt;initMethod name=&quotaddCustomizer&quot;&gt;
+      &lt;arg&gt;
+        &lt;component class=&quotorg.seasar.framework.container.customizer.AspectCustomizer&quot;&gt;
+          &lt;initMethod name=&quotaddInterceptorName&quot;&gt;
+            &lt;arg&gt;&quotpartedCommitInterceptor&quot;&lt;/arg&gt;
+          &lt;/initMethod&gt;
+          &lt;property name=&quotpointcut&quot;&gt;&quotconsume&quot;&lt;/property&gt;
+        &lt;/component&gt;
+      &lt;/arg&gt;
+    &lt;/initMethod&gt;
+    &lt;initMethod name=&quot;addCustomizer&quot;&gt;
+      &lt;arg&gt;statisticsCommitCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+  &lt;/component&gt;
+&lt;!-- for bathory --&gt;
+
+
+&lt;/components&gt;
+</pre></div>
+
+
+<h4>s2container.dicon</h4>
+<p>生成直後。</p>
+
+<div class="source"><pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE components PUBLIC &quot;-//SEASAR//DTD S2Container 2.4//EN&quot; 
+	&quot;http://www.seasar.org/dtd/components24.dtd&quot;&gt;
+&lt;components&gt;
+    &lt;include condition=&quot;#ENV == 'ut'&quot; path=&quot;warmdeploy.dicon&quot;/&gt;
+    &lt;include condition=&quot;#ENV == 'ct'&quot; path=&quot;hotdeploy.dicon&quot;/&gt;
+    &lt;include condition=&quot;#ENV != 'ut' and #ENV != 'ct'&quot; path=&quot;cooldeploy.dicon&quot;/&gt;
+&lt;/components&gt;
+</pre></div>
+
+<p>変換後。</p>
+<div class="source"><pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE components PUBLIC &quot;-//SEASAR//DTD S2Container 2.4//EN&quot; 
+	&quot;http://www.seasar.org/dtd/components24.dtd&quot;&gt;
+&lt;components&gt;
+    &lt;include condition=&quot;#ENV == 'ut'&quot; path=&quot;warmdeploy.dicon&quot;/&gt;
+    &lt;include condition=&quot;#ENV == 'ct'&quot; path=&quot;hotdeploy.dicon&quot;/&gt;
+    &lt;include condition=&quot;#ENV != 'ut' and #ENV != 'ct'&quot; path=&quot;cooldeploy.dicon&quot;/&gt;
+&lt;!-- for bathory --&gt;
+    &lt;component class=&quot;org.seasar.framework.container.factory.SimplePathResolver&quot;&gt;
+        &lt;initMethod name=&quot;addRealPath&quot;&gt;
+          &lt;arg&gt;&quot;j2ee.dicon&quot;&lt;/arg&gt;
+          &lt;arg&gt;&quot;bathory-j2ee.dicon&quot;&lt;/arg&gt;
+        &lt;/initMethod&gt;
+    &lt;/component&gt;
+&lt;!-- for bathory --&gt;
+&lt;/components&gt;
+</pre></div>
+
+
+
+<h3>ブランクのセットアップ（S2Dao）</h3>
+<p>以下のようなbathory特有の設定を行います。</p>
+
+
+<h4>app.dicon</h4>
+<p>生成直後。</p>
+
+<div class="source"><pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE components PUBLIC &quot;-//SEASAR//DTD S2Container 2.4//EN&quot; 
+	&quot;http://www.seasar.org/dtd/components24.dtd&quot;&gt;
+&lt;components&gt;
+  &lt;include path=&quot;convention.dicon&quot;/&gt;
+  &lt;include path=&quot;aop.dicon&quot;/&gt;
+  &lt;include path=&quot;sdao.dicon&quot;/&gt;
+  &lt;include path=&quot;dxo.dicon;/&gt;
+&lt;/components&gt;
+</pre></div>
+
+<p>変換後。</p>
+<div class="source"><pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE components PUBLIC &quot;-//SEASAR//DTD S2Container 2.4//EN&quot; 
+	&quot;http://www.seasar.org/dtd/components24.dtd&quot;&gt;
+&lt;components&gt;
+  &lt;include path=&quot;convention.dicon&quot;/&gt;
+  &lt;include path=&quot;aop.dicon&quot;/&gt;
+  &lt;include path=&quot;sdao.dicon&quot;/&gt;
+  &lt;include path=&quot;dxo.dicon;/&gt;
+
+&lt;!-- for bathory --&gt;
+  &lt;include path=&quot;bathory.dicon&quot;/&gt;
+&lt;!-- for bathory --&gt;
+
+&lt;/components&gt;
+</pre></div>
+
+
+<h4>creator.dicon</h4>
+<p>生成直後。</p>
+
+<div class="source"><pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE components PUBLIC &quot;-//SEASAR//DTD S2Container 2.4//EN&quot; 
+	&quot;http://www.seasar.org/dtd/components24.dtd&quot;&gt;
+&lt;components&gt;
+  &lt;include path=&quot;customizer.dicon&quot;/&gt;
+  &lt;include path=&quot;convention.dicon&quot;/&gt;
+  &lt;component name=&quot;actionCreator&quot; class=&quot;org.seasar.framework.container.creator.ActionCreator&quot;/&gt;
+  &lt;component name=&quot;converterCreator&quot; class=&quot;org.seasar.framework.container.creator.ConverterCreator&quot;/&gt;
+  &lt;component name=&quot;daoCreator&quot; class=&quot;org.seasar.framework.container.creator.DaoCreator&quot;/&gt;
+  &lt;component name=&quot;dtoCreator&quot; class=&quot;org.seasar.framework.container.creator.DtoCreator&quot;/&gt;
+  &lt;component name=&quot;dxoCreator&quot; class=&quot;org.seasar.framework.container.creator.DxoCreator&quot;/&gt;
+  &lt;component name=&quot;helperCreator&quot; class=&quot;org.seasar.framework.container.creator.HelperCreator&quot;/&gt;
+  &lt;component name=&quot;interceptorCreator&quot; class=&quot;org.seasar.framework.container.creator.InterceptorCreator&quot;/&gt;
+  &lt;component name=&quot;logicCreator&quot; class=&quot;org.seasar.framework.container.creator.LogicCreator&quot;/&gt;
+  &lt;component name=&quot;pageCreator&quot; class=&quot;org.seasar.framework.container.creator.PageCreator&quot;/&gt;
+  &lt;component name=&quot;serviceCreator&quot; class=&quot;org.seasar.framework.container.creator.ServiceCreator&quot;/&gt;
+  &lt;component name=&quot;validatorCreator&quot; class=&quot;org.seasar.framework.container.creator.ValidatorCreator&quot;/&gt;
+&lt;/components&gt;
+</pre></div>
+
+<p>変換後。</p>
+<div class="source"><pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE components PUBLIC &quot;-//SEASAR//DTD S2Container 2.4//EN&quot; 
+	&quot;http://www.seasar.org/dtd/components24.dtd&quot;&gt;
+&lt;components&gt;
+  &lt;include path=&quot;customizer.dicon&quot;/&gt;
+  &lt;include path=&quot;convention.dicon&quot;/&gt;
+  &lt;component name=&quot;actionCreator&quot; class=&quot;org.seasar.framework.container.creator.ActionCreator&quot;/&gt;
+  &lt;component name=&quot;converterCreator&quot; class=&quot;org.seasar.framework.container.creator.ConverterCreator&quot;/&gt;
+  &lt;component name=&quot;daoCreator&quot; class=&quot;org.seasar.framework.container.creator.DaoCreator&quot;/&gt;
+  &lt;component name=&quot;dtoCreator&quot; class=&quot;org.seasar.framework.container.creator.DtoCreator&quot;/&gt;
+  &lt;component name=&quot;dxoCreator&quot; class=&quot;org.seasar.framework.container.creator.DxoCreator&quot;/&gt;
+  &lt;component name=&quot;helperCreator&quot; class=&quot;org.seasar.framework.container.creator.HelperCreator&quot;/&gt;
+  &lt;component name=&quot;interceptorCreator&quot; class=&quot;org.seasar.framework.container.creator.InterceptorCreator&quot;/&gt;
+  &lt;component name=&quot;logicCreator&quot; class=&quot;org.seasar.framework.container.creator.LogicCreator&quot;/&gt;
+  &lt;component name=&quot;pageCreator&quot; class=&quot;org.seasar.framework.container.creator.PageCreator&quot;/&gt;
+  &lt;component name=&quot;serviceCreator&quot; class=&quot;org.seasar.framework.container.creator.ServiceCreator&quot;/&gt;
+  &lt;component name=&quot;validatorCreator&quot; class=&quot;org.seasar.framework.container.creator.ValidatorCreator&quot;/&gt;
+&lt;!-- for bathory --&gt;
+  &lt;component name=&quot;collectorCreator&quot; class=&quot;org.seasar.bathory.extentions.seasar2.creator.CollectorCreator&quot;/&gt;
+  &lt;component name=&quot;consumerCreator&quot; class=&quot;org.seasar.bathory.extentions.seasar2.creator.ConsumerCreator&quot;/&gt;
+&lt;!-- for bathory --&gt;
+&lt;/components&gt;
+</pre></div>
+
+
+<h4>customizer.dicon</h4>
+<p>生成直後。</p>
+
+<div class="source"><pre>
+&lt;?xml version=&quot1.0&quot encoding=&quotUTF-8&quot?&gt;
+&lt;!DOCTYPE components PUBLIC &quot-//SEASAR//DTD S2Container 2.4//EN&quot 
+	&quothttp://www.seasar.org/dtd/components24.dtd&quot;&gt;
+&lt;components&gt;
+  &lt;include path=&quotdefault-customizer.dicon&quot/&gt;
+  
+  &lt;component name=&quotserviceCustomizer&quot class=&quotorg.seasar.framework.container.customizer.CustomizerChain&quot;&gt;
+    &lt;initMethod name=&quotaddCustomizer&quot;&gt;
+      &lt;arg&gt;traceCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+    &lt;initMethod name=&quotaddCustomizer&quot;&gt;
+      &lt;arg&gt;requiredTxCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+  &lt;/component&gt;
+  &lt;component name=&quotlogicCustomizer&quot class=&quotorg.seasar.framework.container.customizer.CustomizerChain&quot;&gt;
+    &lt;initMethod name=&quotaddCustomizer&quot;&gt;
+      &lt;arg&gt;traceCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+  &lt;/component&gt;
+  &lt;component name=&quotdaoCustomizer&quot class=&quotorg.seasar.framework.container.customizer.CustomizerChain&quot;&gt;
+    &lt;initMethod name=&quotaddCustomizer&quot;&gt;
+      &lt;arg&gt;traceCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+    &lt;initMethod name=&quotaddCustomizer&quot;&gt;
+      &lt;arg&gt;s2DaoCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+  &lt;/component&gt;
+  &lt;component name=&quotdxoCustomizer&quot class=&quotorg.seasar.framework.container.customizer.CustomizerChain&quot;&gt;
+    &lt;initMethod name=&quotaddCustomizer&quot;&gt;
+      &lt;arg&gt;traceCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+    &lt;initMethod name=&quotaddCustomizer&quot;&gt;
+      &lt;arg&gt;s2DxoCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+  &lt;/component&gt;
+  &lt;component name=&quothelperCustomizer&quot class=&quotorg.seasar.framework.container.customizer.CustomizerChain&quot;&gt;
+    &lt;initMethod name=&quotaddCustomizer&quot;&gt;
+      &lt;arg&gt;traceCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+  &lt;/component&gt;
+&lt;/components&gt;
+
+</pre></div>
+
+<p>変換後。</p>
+<div class="source"><pre>
+&lt;?xml version=&quot1.0&quot encoding=&quotUTF-8&quot?&gt;
+&lt;!DOCTYPE components PUBLIC &quot-//SEASAR//DTD S2Container 2.4//EN&quot 
+	&quothttp://www.seasar.org/dtd/components24.dtd&quot;&gt;
+&lt;components&gt;
+  &lt;include path=&quotdefault-customizer.dicon&quot/&gt;
+  
+  &lt;component name=&quotserviceCustomizer&quot class=&quotorg.seasar.framework.container.customizer.CustomizerChain&quot;&gt;
+    &lt;initMethod name=&quotaddCustomizer&quot;&gt;
+      &lt;arg&gt;traceCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+    &lt;initMethod name=&quotaddCustomizer&quot;&gt;
+      &lt;arg&gt;requiredTxCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+  &lt;/component&gt;
+  &lt;component name=&quotlogicCustomizer&quot class=&quotorg.seasar.framework.container.customizer.CustomizerChain&quot;&gt;
+    &lt;initMethod name=&quotaddCustomizer&quot;&gt;
+      &lt;arg&gt;traceCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+  &lt;/component&gt;
+  &lt;component name=&quotdaoCustomizer&quot class=&quotorg.seasar.framework.container.customizer.CustomizerChain&quot;&gt;
+    &lt;initMethod name=&quotaddCustomizer&quot;&gt;
+      &lt;arg&gt;traceCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+&lt;!-- for bathory --&gt;
+    &lt;initMethod name=&quotaddCustomizer&quot;&gt;
+      &lt;arg&gt;statisticsRegistCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+&lt;!-- for bathory --&gt;
+    &lt;initMethod name=&quotaddCustomizer&quot;&gt;
+      &lt;arg&gt;s2DaoCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+  &lt;/component&gt;
+  &lt;component name=&quotdxoCustomizer&quot class=&quotorg.seasar.framework.container.customizer.CustomizerChain&quot;&gt;
+    &lt;initMethod name=&quotaddCustomizer&quot;&gt;
+      &lt;arg&gt;traceCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+    &lt;initMethod name=&quotaddCustomizer&quot;&gt;
+      &lt;arg&gt;s2DxoCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+  &lt;/component&gt;
+  &lt;component name=&quothelperCustomizer&quot class=&quotorg.seasar.framework.container.customizer.CustomizerChain&quot;&gt;
+    &lt;initMethod name=&quotaddCustomizer&quot;&gt;
+      &lt;arg&gt;traceCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+  &lt;/component&gt;
+&lt;!-- for bathory --&gt;
+  &lt;component name=&quotcollectorCustomizer&quot class=&quotorg.seasar.framework.container.customizer.CustomizerChain&quot;&gt;
+    &lt;initMethod name=&quotaddCustomizer&quot;&gt;
+      &lt;arg&gt;traceCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+    &lt;initMethod name=&quotaddCustomizer&quot;&gt;
+      &lt;arg&gt;statisticsCommitCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+    &lt;initMethod name=&quotaddCustomizer&quot;&gt;
+      &lt;arg&gt;requiredTxCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+  &lt;/component&gt;
+  &lt;component name=&quotconsumerCustomizer&quot class=&quotorg.seasar.framework.container.customizer.CustomizerChain&quot;&gt;
+    &lt;initMethod name=&quotaddCustomizer&quot;&gt;
+      &lt;arg&gt;traceCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+    &lt;initMethod name=&quotaddCustomizer&quot;&gt;
+      &lt;arg&gt;requiredTxCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+    &lt;initMethod name=&quotaddCustomizer&quot;&gt;
+      &lt;arg&gt;
+        &lt;component class=&quotorg.seasar.framework.container.customizer.AspectCustomizer&quot;&gt;
+          &lt;initMethod name=&quotaddInterceptorName&quot;&gt;
+            &lt;arg&gt;&quotsavepointInterceptor&quot;&lt;/arg&gt;
+          &lt;/initMethod&gt;
+          &lt;property name=&quotpointcut&quot;&gt;&quotconsume&quot;&lt;/property&gt;
+        &lt;/component&gt;
+      &lt;/arg&gt;
+    &lt;/initMethod&gt;
+    &lt;initMethod name=&quotaddCustomizer&quot;&gt;
+      &lt;arg&gt;
+        &lt;component class=&quotorg.seasar.framework.container.customizer.AspectCustomizer&quot;&gt;
+          &lt;initMethod name=&quotaddInterceptorName&quot;&gt;
+            &lt;arg&gt;&quotpartedCommitInterceptor&quot;&lt;/arg&gt;
+          &lt;/initMethod&gt;
+          &lt;property name=&quotpointcut&quot;&gt;&quotconsume&quot;&lt;/property&gt;
+        &lt;/component&gt;
+      &lt;/arg&gt;
+    &lt;/initMethod&gt;
+    &lt;initMethod name=&quotaddCustomizer&quot;&gt;
+      &lt;arg&gt;statisticsCommitCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+  &lt;/component&gt;
+&lt;!-- for bathory --&gt;
+&lt;/components&gt;
+
+</pre></div>
+
+
+<h4>s2container.dicon</h4>
+<p>生成直後。</p>
+
+<div class="source"><pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE components PUBLIC &quot;-//SEASAR//DTD S2Container 2.4//EN&quot; 
+	&quot;http://www.seasar.org/dtd/components24.dtd&quot;&gt;
+&lt;components&gt;
+    &lt;include condition=&quot;#ENV == 'ut'&quot; path=&quot;warmdeploy.dicon&quot;/&gt;
+    &lt;include condition=&quot;#ENV == 'ct'&quot; path=&quot;hotdeploy.dicon&quot;/&gt;
+    &lt;include condition=&quot;#ENV != 'ut' and #ENV != 'ct'&quot; path=&quot;cooldeploy.dicon&quot;/&gt;
+&lt;/components&gt;
+</pre></div>
+
+<p>変換後。</p>
+<div class="source"><pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE components PUBLIC &quot;-//SEASAR//DTD S2Container 2.4//EN&quot; 
+	&quot;http://www.seasar.org/dtd/components24.dtd&quot;&gt;
+&lt;components&gt;
+    &lt;include condition=&quot;#ENV == 'ut'&quot; path=&quot;warmdeploy.dicon&quot;/&gt;
+    &lt;include condition=&quot;#ENV == 'ct'&quot; path=&quot;hotdeploy.dicon&quot;/&gt;
+    &lt;include condition=&quot;#ENV != 'ut' and #ENV != 'ct'&quot; path=&quot;cooldeploy.dicon&quot;/&gt;
+&lt;!-- for bathory --&gt;
+    &lt;component class=&quot;org.seasar.framework.container.factory.SimplePathResolver&quot;&gt;
+        &lt;initMethod name=&quot;addRealPath&quot;&gt;
+          &lt;arg&gt;&quot;j2ee.dicon&quot;&lt;/arg&gt;
+          &lt;arg&gt;&quot;bathory-j2ee.dicon&quot;&lt;/arg&gt;
+        &lt;/initMethod&gt;
+    &lt;/component&gt;
+&lt;!-- for bathory --&gt;
+&lt;/components&gt;
+</pre></div>
 
 </div><!-- section -->
 
