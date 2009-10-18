@@ -67,6 +67,22 @@ public class Application {
         return getIntValue(ApplicationKeys.DEFAULT_PARALLELISM);
     }
 
+    /**
+     * 通常のリトライ回数を取得します.
+     * @return 通常のリトライ回数
+     */
+    public int getDefaultRetryCount() {
+        return getIntValue(ApplicationKeys.DEFAULT_RETRY_COUNT);
+    }
+
+    /**
+     * 分割コミット回数を取得します.
+     * @return 分割コミット回数
+     */
+    public long getDefaultCommitCount() {
+        return getLongValue(ApplicationKeys.DEFAULT_COMMIT_COUNT);
+    }
+
     
     /**
      * 設定値を取得します.
@@ -95,5 +111,13 @@ public class Application {
      */
     private int getIntValue(final String key) {
         return Integer.parseInt(getValue(key));
+    }
+    /**
+     * 設定値を数値として取得します.
+     * @param key 設定キー
+     * @return 設定値
+     */
+    private long getLongValue(final String key) {
+        return Long.parseLong(getValue(key));
     }
 }

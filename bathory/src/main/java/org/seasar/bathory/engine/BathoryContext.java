@@ -13,6 +13,11 @@ import org.seasar.bathory.def.Application;
 public class BathoryContext {
     /** 並行度. */
     private int parallelism;
+    /** リトライ回数. */
+    private int retryCount;
+    /** 分割コミット回数. */
+    private int commitCount;
+
 
     /** バッチに引き渡したいパラメータ. */
     private Map<String, Object> properties;
@@ -60,6 +65,38 @@ public class BathoryContext {
      */
     public void setParallelism(final int size) {
         this.parallelism = size;
+    }
+
+    /**
+     * リトライ回数を取得します.
+     * @return リトライ回数
+     */
+    public int getRetryCount() {
+        return retryCount;
+    }
+
+    /**
+     * リトライ回数を設定します.
+     * @param count リトライ回数
+     */
+    public void setRetryCount(final int count) {
+        this.retryCount = count;
+    }
+
+    /**
+     * 分割コミット回数を取得します.
+     * @return 分割コミット
+     */
+    public long getCommitCount() {
+        return commitCount;
+    }
+
+    /**
+     * 分割コミットを設定します.
+     * @param count 分割コミット
+     */
+    public void setCommitCount(final int count) {
+        this.commitCount = count;
     }
 
     /**

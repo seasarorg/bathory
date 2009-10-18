@@ -10,14 +10,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 
-import org.seasar.bathory.def.Application;
 import org.seasar.bathory.def.Constants;
 import org.seasar.bathory.def.Constants.ContextKeys;
 import org.seasar.bathory.engine.BathoryContext;
 import org.seasar.bathory.exception.IllegalCommandArgumentException;
 import org.seasar.framework.beans.util.BeanUtil;
 
-
+import static org.seasar.bathory.def.Application.getApplication;
 
 /**
  * .
@@ -25,15 +24,12 @@ import org.seasar.framework.beans.util.BeanUtil;
  */
 @SuppressWarnings("unchecked")
 public class BatchExecuterHelper {
-    /** デフォルトの並列度. */
-    private static final int DEFAULT_PARALLELISM
-                = Application.getApplication().getDefaultParallelism();
-    
-    
     /** デフォルト値を格納するクラス. */
     private static final Map<String, Object> DEFAULT_VALUES = new HashMap<String, Object>();
     static {
-        DEFAULT_VALUES.put(ContextKeys.PARALLELISM, DEFAULT_PARALLELISM);
+        DEFAULT_VALUES.put(ContextKeys.PARALLELISM,  getApplication().getDefaultParallelism());
+        DEFAULT_VALUES.put(ContextKeys.RETRY_COUNT,  getApplication().getDefaultRetryCount());
+        DEFAULT_VALUES.put(ContextKeys.COMMIT_COUNT, getApplication().getDefaultCommitCount());
     }
 
     /**
@@ -72,8 +68,8 @@ public class BatchExecuterHelper {
      * @param params パラメータ
      */
     private static void validate(final Map params) {
-        validate(params, ContextKeys.JOBID, "Job ID");
-        validate(params, ContextKeys.BATCHID, "Batch ID");
+        validateNotNull(params, ContextKeys.JOBID, "Job ID");
+        validateNotNull(params, ContextKeys.BATCHID, "Batch ID");
     }
 
     /**
@@ -82,7 +78,7 @@ public class BatchExecuterHelper {
      * @param itemKey 検証項目キー情報
      * @param itemName 検証項目名
      */
-    private static void validate(final Map params,
+    private static void validateNotNull(final Map params,
                                  final String itemKey,
                                  final String itemName) {
         if (params.get(itemKey) == null) {

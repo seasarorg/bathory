@@ -3,6 +3,7 @@
 	"http://www.seasar.org/dtd/components24.dtd">
 <components>
   <component name="savepointInterceptor"        class="org.seasar.bathory.extentions.seasar2.interceptor.SavepointInterceptor"/>
+  <component name="partedCommitInterceptor"     class="org.seasar.bathory.extentions.seasar2.interceptor.PartedCommitInterceptor"/>
   <component name="statisticsCommitInterceptor" class="org.seasar.bathory.extentions.seasar2.interceptor.StatisticsCommitInterceptor"/>
   <component name="statisticsRegistInterceptor" class="org.seasar.bathory.extentions.seasar2.interceptor.StatisticsRegistInterceptor"/>
 

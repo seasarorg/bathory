@@ -38,6 +38,10 @@ public class Constants {
         public static final String BATCHID            = "batchId";
         /** 並列度指定キー. */
         public static final String PARALLELISM        = "parallelism";
+        /** リトライ回数指定キー. */
+        public static final String RETRY_COUNT        = "retryCount";
+        /** 分割コミットキー. */
+        public static final String COMMIT_COUNT       = "commitCount";
         /** collector名指定キー. */
         public static final String COLLECTORNAME      = "collectorName";
         /** consumer名指定キー. */
@@ -69,7 +73,11 @@ public class Constants {
         public static final String QUEUE_SIZE = "queueSize";
         /** 通常の並列度. */
         public static final String DEFAULT_PARALLELISM = "defaultParallelism";
-        
+        /** 通常のリトライ回数. */
+        public static final String DEFAULT_RETRY_COUNT = "defaultRetryCount";
+        /** 通常の分割コミット回数. */
+        public static final String DEFAULT_COMMIT_COUNT = "defaultCommitCount";
+
         /**
          * インスタンス化禁止.
          */

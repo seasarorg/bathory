@@ -4,6 +4,8 @@ import java.util.Map;
 
 import javax.transaction.UserTransaction;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.seasar.bathory.def.Constants;
 import org.seasar.bathory.engine.Consumer;
 import org.seasar.bathory.exception.SystemException;
@@ -17,6 +19,9 @@ import org.seasar.framework.exception.SRuntimeException;
  * @author toyokazu
  */
 public class ConsumerHandler extends BaseHandler {
+    /** Log. */
+    private static final Log LOG = LogFactory.getLog(ConsumerHandler.class);
+
     /** Consumer. */
     private Consumer target;
 
@@ -64,6 +69,20 @@ public class ConsumerHandler extends BaseHandler {
      * メイン処理.
      */
     private void main() {
+        for (int i = 0, iMax = getContext().getRetryCount(); i < iMax; i++) {
+            try {
+                mainImpl();
+                // 通常に終了したらループは抜け出す
+                i = iMax;
+            } catch (Exception e) {
+                LOG.info(e);
+            }
+        }
+    }
+    /**
+     * メイン処理.
+     */
+    private void mainImpl() {
         boolean isEnded = false;
         while (!isEnded) {
             Map<String, Object> values = getCasket().consume();
