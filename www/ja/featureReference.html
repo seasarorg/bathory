@@ -50,29 +50,13 @@
 <h2>Menu</h2>
 <ul>
 	<li><a href="http://bathory.sandbox.seasar.org/ja/index.html">ホーム</a></li>
-</ul>
-<ul>
 	<li><a href="http://bathory.sandbox.seasar.org/ja/concept.html">概要</a></li>
-</ul>
-<ul>
 	<li><a href="http://bathory.sandbox.seasar.org/ja/tutorial.html">チュートリアル </a></li>
-</ul>
-<ul>
 	<li><a href="http://bathory.sandbox.seasar.org/ja/featureReference.html">機能リファレンス</a></li>
-</ul>
-<ul>
 	<li><a href="http://bathory.sandbox.seasar.org/ja/settingReference.html">設定ファイルリファレンス</a></li>
-</ul>
-<ul>
 	<li><a href="http://bathory.sandbox.seasar.org/ja/setup.html">実行環境のセットアップ</a></li>
-</ul>
-<ul>
 	<li><a href="http://bathory.sandbox.seasar.org/ja/releaseNotes.html">リリースノート</a></li>
-</ul>
-<ul>
 	<li><a href="http://bathory.sandbox.seasar.org/ja/roadmap.html">ロードマップ</a></li>
-</ul>
-<ul>
 	<li><a href="https://www.seasar.org/svn/sandbox/bathory/trunk/bathory">SVN リポジトリブラウザ</a></li>
 </ul>
 
@@ -87,9 +71,485 @@
 
 <div class="section">
 
-<h2>作成中</h2>
-<p>申し訳ありません。現在鋭意製作中です.<br /></p>
+<h2>機能リファレンス</h2>
+<p>bathoryで使われている機能の説明をします。</p>
+
+
+<h3><a name="Project">プロジェクト構成</a></h3>
+<p>bathoryでは、ルートパッケージの配下にcollector,consumerなどのパッケージを作って、 そこに必要なファイルを格納します。 
+ルートパッケージ名は、任意の名前を指定することができます。 
+例えば、bathory-examplesプロジェクトでは、ルートパッケージ名は、examples.bathoryになっています。</p>
+<p>ルートパッケージ名は、convention.diconで指定します。 
+bathory-examplesプロジェクトでは、src/main/resourcesで次のように指定されています。</p>
+<div class="source"><pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE components PUBLIC &quot;-//SEASAR//DTD S2Container 2.4//EN&quot; 
+	&quot;http://www.seasar.org/dtd/components24.dtd&quot;&gt;
+&lt;components&gt;
+	&lt;component class=&quot;org.seasar.framework.convention.impl.NamingConventionImpl&quot;&gt;
+		<b>&lt;initMethod name=&quot;addRootPackageName&quot;&gt;
+			&lt;arg&gt;&quot;examples.bathory&quot;&lt;/arg&gt;
+		&lt;/initMethod&gt;</b>
+	&lt;/component&gt;
+&lt;/components&gt;
+</pre></div>
+<p>このルートパッケージ以下に、<a href="#Contoller">Controller</a>や<a href="#Consumer">Consumer</a>を作成します。</p>
+
+
+<h3><a name="Architecture">アプリケーションアーキテクチャ</a></h3>
+<p>bathoryは、Producer-Consumerパターンに基づいたアーキテクチャを採用しています。
+bathory中では、Producerに当たる部分を<a href="#Collector">Collector</a>、Consumerにあたる部分を<a href="#Consumer">Consumer</a>、CollectorとConsumerのデータ受け渡しは<a href="#Casket">Casket</a>と呼んでいます。
+以下にbathoryのアプリケーションアーキテクチャを説明します。</p>
+
+<p>一般的なバッチアプリケーションは、以下のような構造になります。</p>
+<img src="./images/featureReference/Architecture_01.png"/>
+<ol>
+	<li>データベースやファイル（CSV/XML）ファイルを入力情報として取得</li>
+	<li>入力情報に対し、業務処理を実行</li>
+	<li>データベースやファイル（CSV/XML）メールや帳票に対して処理結果を出力</li>
+</ol>
+<p>bathoryでは、このようなバッチアプリケーション構築時の雛形を提供します。</p>
+
+<p>このうち、入力に関する処理を<a href="#Collector">Collector</a>に記述し、業務処理・出力に関する処理を<a href="#Consumer">Consumer</a>に記述します。
+データは直接受け渡しせず、<a href="#Casket">Casket</a>という入れ物クラス経由で受け渡しを行います。
+bathoryでは、この<a href="#Collector">Collector</a>と<a href="#Consumer">Consumer</a>を作成することでバッチアプリケーションを構築していきます。
+</p>
+
+<h3><a name="Collector">Collector</a></h3>
+<p>バッチアプリケーションの中で、データ収集を司るクラスをCollectorといいます。
+Collectorの役割は、データベースやファイルを読み込み、<a href="#Casket">Casket</a>というクラスへデータを引き渡すことです。
+</p>
+<p>Collectorクラスは、以下のような規約でクラス名を付与します。
+</p>
+<table border="1px">
+	<th>
+		<td>規約</td>
+		<td>説明</td>
+	</th>
+	<tr>
+		<td>1</td>
+		<td>パッケージ名</td>
+		<td>ルートパッケージ名.collector<br/><br/>
+		ルートパッケージ名の詳細は<a href="#Project">こちら</a>を参照してください。
+		</td>
+	</tr>
+	<tr>
+		<td>2</td>
+		<td>クラス名</td>
+		<td>
+			<ul>
+				<li>バッチを一意に識別するバッチIDを決めます。例）batchTest1（可能であれば、プロジェクト内で命名規約を決めてください）</li>
+				<li>最初の一文字目を大文字（BatchTest1）にします。</li>
+				<li>後ろにCollectorを付け加えます。（BatchTest1Collector）</li>
+			</ul>
+		</td>
+	</tr>
+	<tr>
+		<td>3</td>
+		<td>実装すべきインタフェース</td>
+		<td>org.seasar.bathory.engine.Collector<br/><br/>
+		必要に応じて、org.seasar.bathory.engine.BatchLifecycleListener<br/>
+		BatchLifecycleListenerの詳細は<a href="#BatchLifecycleListener">こちら</a>を参照してください。
+		</td>
+	</tr>
+</table>
+
+<p>S2DaoやS2JDBCでの検索結果が収集データとして利用可能な場合、収集処理を容易に記述するためのユーティリティクラスを用意しています。
+<table border="1px">
+	<th>
+		<td>収集元</td>
+		<td>使用する機能</td>
+		<td>クラス</td>
+	</th>
+	<tr>
+		<td>1</td>
+		<td>S2Dao</td>
+		<td><a href="http://s2dao.seasar.org/ja/s2dao-tiger.html#FetchHandler">FetchHandler</a></td>
+		<td>org.seasar.bathory.extentions.s2dao.FetchHandlerAdapter</td>
+	</tr>
+	<tr>
+		<td>2</td>
+		<td>S2JDBC</td>
+		<td><a href="http://s2container.seasar.org/2.4/ja/s2jdbc_tutorial.html#イテレーション">IterationCallback</a></td>
+		<td>org.seasar.bathory.extentions.s2jdbc.IterationCallbackAdapter</td>
+	</tr>
+</table>
+
+</p>
+
+<p>CSVファイルやXMLファイルに関してのユーティリティクラスは今後拡充予定です。	
+</p>
+
+
+<h3><a name="Consumer">Consumer</a></h3>
+<p>バッチアプリケーションの中で、業務処理や出力処理を司るクラスをConsumerといいます。
+Consumerの役割は、Collectorが収集した一件分のデータに対して業務処理・出力処理を行います。
+</p>
+<p>Consumerクラスは、以下のような規約でクラス名を付与します。
+</p>
+<table border="1px">
+	<th>
+		<td>規約</td>
+		<td>説明</td>
+	</th>
+	<tr>
+		<td>1</td>
+		<td>パッケージ名</td>
+		<td>ルートパッケージ名.consumer<br/><br/>
+		ルートパッケージ名の詳細は<a href="#Project">こちら</a>を参照してください。
+		</td>
+	</tr>
+	<tr>
+		<td>2</td>
+		<td>クラス名</td>
+		<td>対応するCollectorのクラス名のCollectorをConsumerに変更します。</td>
+	</tr>
+	<tr>
+		<td>3</td>
+		<td>実装すべきインタフェース</td>
+		<td>org.seasar.bathory.engine.Consumer<br/><br/>
+		必要に応じて、org.seasar.bathory.engine.BatchLifecycleListener<br/>
+		BatchLifecycleListenerの詳細は<a href="#BatchLifecycleListener">こちら</a>を参照してください。
+		</td>
+	</tr>
+</table>
+
+<p>業務処理が長くなるようであれば、ServiceクラスやLogicクラスに切り出してください。
+Teedaのページクラスのようなクラスだと理解してくれるとわかりやすいと思います。
+</p>
+
+
+<h3><a name="BatchLifecycleListener">初期化・終了処理</a></h3>
+<p>バッチアプリケーションを構築する際、ファイルのオープン・クローズなど、処理開始・終了時に一回のみ行いたい処理がある場合があります。
+その場合は、<a href="#Collector">Collector</a>もしくは<a href="#Consumer">Consumer</a>にBatchLifecycleListenerを実装してください。
+<div class="source"><pre>
+    public class TestConsumer implements Consumer, BatchLifecycleListener {
+    /** Writerを格納するキー名. */
+    private static final String WRITER = "Writer";
+    @Override
+    public void initilize() {
+        BathoryContext context     = BathoryContext.getCurrentInstance();
+        try {
+            Writer writer = new BufferedWriter(new FileWriter("/path/to/file.csv"));
+        } catch (IOException e) {
+            throw new SystemException(e);
+        }
+        context.getProperties().put(STRING_WRITER, writer);
+    }
+    @Override
+    public void consume() {
+        // BathoryContextの取得
+        BathoryContext context = BathoryContext.getCurrentInstance();
+        Writer writer = (Writer) context.getProperties().get(WRITER);
+
+        // writerへの書き込み処理
+
+    }
+
+    @Override
+    public void terminate() {
+        // BathoryContextの取得
+        BathoryContext context = BathoryContext.getCurrentInstance();
+        Writer writer = (Writer) context.getProperties().get(WRITER);
+
+        // writerのclose
+		try {
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            throw new SystemException(e);
+        }
+    }	
+}	
+</pre></div>
+<p>初期化・終了処理は、Collector,Consumerそれぞれに記述可能です。
+特に大きな理由がないのであれば、以下のようなルールで記述することをお勧めします。
+ファイルへのアクセスがデータ取得時なら、<a href="#Collector">Collector</a>に、データ処理時なら<a href="#Consumer">Consumer</a>に記述すると読みやすいと思います。
+</p>
+
+
+<h3><a name="Casket">Casket</a></h3>
+<p>データの受け渡しを行うためのクラスです。
+<a href="#Collector">Collector</a>にて取得したデータを受け取り、<a href="#Consumer">Consumer</a>へ引渡しをします。
+</p>
+<p>バッチは大規模なデータを扱うことが多いため、大量にメモリを消費してしまう可能性があります。
+そのため、Casketでは、一定件数以上のデータがメモリ上に展開されないようになっています。
+Casketのデータ保持件数のデフォルト値と変更方法については<a href="#ApplicationSettings">バッチアプリケーション設定情報</a>を参照。
+</p>
+
+<h3><a name="ExitCode">終了コード</a></h3>
+<p>終了コードとは、バッチアプリケーションが終了した際、バッチ実行の結果を呼び出した元へ伝達するためのコードのことです。
+通常、バッチアプリケーションは、ジョブスケジューラから呼び出されます。
+ジョブスケジューラでは、この終了コードを参照して、処理の継続・中断・条件分岐などを決定します。
+</p>
+<p>bathoryは、発生した例外に応じて終了コードを決定します。例外と終了コードの関係は以下のとおりです。</p>
+<table border="1px">
+	<th>
+		<td>例外</td>
+		<td>説明</td>
+		<td>処理継続</td>
+		<td>終了コード</td>
+	</th>
+	<tr>
+		<td>1</td>
+		<td>org.seasar.bathory.exception.RecoverableException</td>
+		<td>回復可能であることを表す例外。</td>
+		<td>処理継続</td>
+		<td>警告</td>
+	</tr>
+	<tr>
+		<td>2</td>
+		<td>org.seasar.bathory.exception.ExitException</td>
+		<td>終了ステータスコードを指定して終了したい際に使用する例外。</td>
+		<td>即時終了</td>
+		<td>任意の終了コード</td>
+	</tr>
+	<tr>
+		<td>3</td>
+		<td>その他の例外</td>
+		<td>&nbsp;</td>
+		<td>即時終了</td>
+		<td>エラー</td>
+	</tr>
+	<tr>
+		<td>4</td>
+		<td>例外が未発生</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>正常</td>
+	</tr>
+</table>
+
+<p>終了コードのデフォルト値と変更方法については<a href="#ApplicationSettings">バッチアプリケーション設定情報</a>を参照。</p>
+
+
+<h3><a name="Transatcion">トランザクション</a></h3>
+<p>バッチアプリケーションでは、オンラインアプリケーションとは違った、バッチアプリケーション特有のトランザクション概念が存在します。</p>
+<p>bathoryでは、以下のようなトランザクション機能をサポートします。</p>
+<ul>
+	<li>セーブポイント</li>
+	<li>コミットポイント</li>
+	<li>リトライ</li>
+	<li>リラン</li>
+</ul>
+
+
+<h4><a name="Savepoint">セーブポイント</a></h4>
+<p>TBD</p>
+<!--
+<p>セーブポイントとは、トランザクションにおける</p>
+<h4>トランザクション=>セーブポイントを絡めた説明？</h4>
+<p>セーブポイントを使用すると、トランザクションを部分的にロールバックできます。</p>
+-->
+
+<h4><a name="CommitPoint">コミットポイント</a></h4>
+<p>コミットポイントとは、一定処理件数毎にコミットをかける機能です。</p>
+<p>
+大量件数を処理バッチアプリケーションでは、途中でコミットする必要がある場合があります。
+たとえば、大量件のテーブルを一回のトランザクションで処理した場合、長時間ロックがかかり続けます。
+そのような場合、処理時間をかんがみた上で一定件数毎にコミットを行い、ロックの時間を抑えます。
+</p>
+<p>コミットポイントに正数を与えた場合、その件数毎にコミットを行います。
+コミットポイントに0以下の数を指定すると、途中でコミットは行わず、オンラインアプリケーションのようなトランザクションになります。
+起動オプションの指定方法については<a href="#Option">起動オプション</a>を参照。
+</p>
+<p>コミットポイントのデフォルト値と変更方法については<a href="#ApplicationSettings">バッチアプリケーション設定情報</a>を参照。</p>
+
+
+<h4><a name="Retry">リトライ</a></h4>
+<p>TBD</p>
 <p></p>
+
+
+<h4><a name="ReRun">リラン</a></h4>
+<p>TBD</p>
+<p></p>
+
+
+<h3><a name="ApplicationSettings">バッチアプリケーション設定情報</a></h3>
+<p>bathoryでは、アプリケーション全体に関する設定を、設定ファイルにて変更することが可能です。</p>
+<p>以下に、設定可能な項目の一覧及び規定値、変更方法を説明します。</p>
+<h4><a name="ApplicationDefaultValues">アプリケーション規定値</a></h4>
+<p>bathroyでは、以下の用な設定項目があり、規定値では以下のように設定しています。</p>
+<table border="1px">
+	<th>
+		<td>キー名</td>
+		<td>説明</td>
+		<td>値</td>
+	</th>
+	<tr>
+		<td>1</td>
+		<td>successCode</td>
+		<td>バッチが正常に終了した際の終了コード</td>
+		<td>0</td>
+	</tr>
+	<tr>
+		<td>2</td>
+		<td>warnCode</td>
+		<td>回復可能な例外（セーブポイントまでのロールバック）が一回以上発生した際の終了コード</td>
+		<td>1</td>
+	</tr>
+	<tr>
+		<td>3</td>
+		<td>errorCode</td>
+		<td>回復可能な例外が発生した際の終了コード</td>
+		<td>10</td>
+	</tr>
+	<tr>
+		<td>4</td>
+		<td>rollbackBorder</td>
+		<td>トランザクションの全体をロールバックする終了コード値</td>
+		<td>10</td>
+	</tr>
+	<tr>
+		<td>5</td>
+		<td>queueSize</td>
+		<td>Casketに保持するキューの大きさ</td>
+		<td>100</td>
+	</tr>
+	<tr>
+		<td>6</td>
+		<td>defaultParallelism</td>
+		<td>並列度を指定しなかった際に選択される並列度</td>
+		<td>1</td>
+	</tr>
+	<tr>
+		<td>7</td>
+		<td>defaultRetryCount</td>
+		<td>リトライ回数を指定しなかった際に選択されるリトライ回数</td>
+		<td>1</td>
+	</tr>
+	<tr>
+		<td>8</td>
+		<td>defaultCommitCount</td>
+		<td>コミット回数を指定しなかった際に選択されるコミット回数。0を指定すると途中でコミットを発行せず、ひとつのトランザクションとして動作します</td>
+		<td>0</td>
+	</tr>
+</table>
+
+
+<h4><a name="ConfigureApplicationSettings">アプリケーション設定値変更方法</a></h4>
+<p>クラスパスが通っているディレクトリへBATSetting.propetiesというファイルを用意してください。
+そして、設定値を変更したい項目を定義してください。
+</p>
+<p>以下は、終了コードの値を変更しています。</p>
+<div class="source"><pre>
+warnCode=5
+errorCode=99
+</pre></div>
+<p>BATSetting.propeties</p>
+
+
+<h3><a name="Concurrency">並列処理</a></h3>
+<p>TBD</p>
+<p></p>
+
+
+<h3><a name="MessageResources">メッセージリソース管理</a></h3>
+<p>TBD</p>
+<p></p>
+
+
+<h3><a name="Statistics">統計情報</a></h3>
+<p>TBD</p>
+<p></p>
+
+
+<h3><a name="Context">Context情報</a></h3>
+<p>TBD</p>
+<p></p>
+
+
+<h3><a name="Log">ログ</a></h3>
+<p>TBD</p>
+<p></p>
+
+
+<h3><a name="Option">起動オプション</a></h3>
+<p>バッチアプリケーションを起動する際に指定可能な起動オプションは以下のとおり。</p>
+<table border="1px">
+	<th>
+		<td>オプション</td>
+		<td>日本語名</td>
+		<td>省略可否</td>
+		<td>説明</td>
+		<td>例</td>
+	</th>
+	<tr>
+		<td>1</td>
+		<td>jobId</td>
+		<td>ジョブID</td>
+		<td>不可</td>
+		<td>ジョブスケジューラへジョブとして登録する際のID</td>
+		<td>job1</td>
+	</tr>
+	<tr>
+		<td>2</td>
+		<td>batchId</td>
+		<td>バッチID</td>
+		<td>不可</td>
+		<td>バッチアプリケーションのID。通常はこのIDを基にしたCollectorとConsumerを使用します。</td>
+		<td>batch1</td>
+	</tr>
+	<tr>
+		<td>3</td>
+		<td>parallelism</td>
+		<td>Consumerの並列度</td>
+		<td>可</td>
+		<td><a href="#Concurrency">並列処理</a>参照</td></td>
+		<td>3</td>
+	</tr>
+	<tr>
+		<td>4</td>
+		<td>retryCount</td>
+		<td>リトライ回数</td>
+		<td>可</td>
+		<td><a href="#Retry">リトライ</a>参照</td></td>
+		<td>3</td>
+	</tr>
+	<tr>
+		<td>5</td>
+		<td>commitCount</td>
+		<td>コミットカウント</td>
+		<td>可</td>
+		<td><a href="#CommitPoint">コミットポイント</a>参照</td>
+		<td>1000000</td>
+	</tr>
+	<tr>
+		<td>6</td>
+		<td>identName</td>
+		<td>バッチ識別子</td>
+		<td>可</td>
+		<td>デフォルトでは、jobId + batchId + 現在日時(yyyyMMddhh24mmssSSS)になります。統計情報のキー情報等に使用します。</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>7</td>
+		<td>collectorName</td>
+		<td>Collectorの名称</td>
+		<td>可</td>
+		<td>デフォルトの、バッチID+Collector以外のCollectorを指定したい際に使用します。</td>
+		<td>testCollector</td>
+	</tr>
+	<tr>
+		<td>8</td>
+		<td>consumerName</td>
+		<td>Consumerの名称</td>
+		<td>可</td>
+		<td>デフォルトの、バッチID+Consumer以外のConsumerを指定したい際に使用します。</td>
+		<td>testConsumer</td>
+	</tr>
+
+</table>
+
+
+<!--
+<div class="source"><pre>
+
+</pre></div>
+
+-->
+
 
 </div><!-- section -->
 
