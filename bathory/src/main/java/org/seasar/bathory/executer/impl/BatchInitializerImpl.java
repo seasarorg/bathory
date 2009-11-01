@@ -1,6 +1,6 @@
 package org.seasar.bathory.executer.impl;
 
-import org.seasar.bathory.engine.BatchLifecycleListner;
+import org.seasar.bathory.engine.BatchLifecycleListener;
 import org.seasar.bathory.engine.BathoryContext;
 import org.seasar.bathory.engine.Collector;
 import org.seasar.bathory.engine.Consumer;
@@ -35,8 +35,8 @@ public class BatchInitializerImpl extends BaseBatch implements BatchInitializer 
      * @param object 対象オブジェクト
      */
     private void initilize(final Object object) {
-        if (object instanceof BatchLifecycleListner) {
-            ((BatchLifecycleListner) object).initilize();
+        if (object instanceof BatchLifecycleListener) {
+            ((BatchLifecycleListener) object).initilize();
         }
     }
 }
