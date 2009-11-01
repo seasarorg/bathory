@@ -73,21 +73,18 @@
       </arg>
     </initMethod>
     <initMethod name="addCustomizer">
+      <arg>
+        <component class="org.seasar.framework.container.customizer.AspectCustomizer">
+          <initMethod name="addInterceptorName">
+            <arg>"partedCommitInterceptor"</arg>
+          </initMethod>
+          <property name="pointcut">"consume"</property>
+        </component>
+      </arg>
+    </initMethod>
+    <initMethod name="addCustomizer">
       <arg>statisticsCommitCustomizer</arg>
     </initMethod>
   </component>
-
-
-  <component name="savepointCustomizer" class="org.seasar.framework.container.customizer.AspectCustomizer">
-    <property name="interceptorName">"savepointInterceptor"</property>
-  </component>
-  <component name="statisticsCommitCustomizer" class="org.seasar.framework.container.customizer.AspectCustomizer">
-    <property name="interceptorName">"statisticsCommitInterceptor"</property>
-  </component>
-  <component name="statisticsRegistCustomizer" class="org.seasar.framework.container.customizer.AspectCustomizer">
-    <property name="interceptorName">"statisticsRegistInterceptor"</property>
-  </component>
-
-
 <!-- for bathory -->
 </components>

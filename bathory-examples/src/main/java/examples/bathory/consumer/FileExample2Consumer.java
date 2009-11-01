@@ -6,7 +6,7 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.seasar.bathory.engine.BatchLifecycleListner;
+import org.seasar.bathory.engine.BatchLifecycleListener;
 import org.seasar.bathory.engine.BathoryContext;
 import org.seasar.bathory.engine.Consumer;
 import org.seasar.bathory.exception.SystemException;
@@ -15,7 +15,7 @@ import org.seasar.bathory.exception.SystemException;
  * .
  * @author toyokazu
  */
-public class FileExample2Consumer implements Consumer, BatchLifecycleListner {
+public class FileExample2Consumer implements Consumer, BatchLifecycleListener {
     /** StringWriterを格納するキー名. */
     private static final String STRING_WRITER = "StringWriter";
     /** XMLStreamWriterを格納するキー名. */

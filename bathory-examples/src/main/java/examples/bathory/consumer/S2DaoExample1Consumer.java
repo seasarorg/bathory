@@ -10,35 +10,18 @@ import org.seasar.framework.beans.util.BeanUtil;
 import examples.bathory.dao.EmpDao;
 import examples.bathory.entity.Emp;
 
-
-/**
- * .
- * @author toyokazu
- */
 public class S2DaoExample1Consumer implements Consumer {
 
-    /** id. */
     public Long id;
-    /** empNo. */
     public Integer empNo;
-    /** empName. */
     public String empName;
-    /** mgrId. */
     public Integer mgrId;
-    /** hiredate. */
     public Date hiredate;
-    /** sal. */
     public BigDecimal sal;
-    /** deptId. */
     public Integer deptId;
-    /** versionNo. */
     public Integer versionNo;
-    /** EmpDao. */
+
     public EmpDao dao;
-    /**
-     * データ処理.
-     * @see org.seasar.bathory.engine.Consumer#consume()
-     */
     @Override
     public void consume() {
         // 自分自身に値が格納されているので、処理を行う。
@@ -46,7 +29,7 @@ public class S2DaoExample1Consumer implements Consumer {
         BeanUtil.copyProperties(this, data);
         
         // 業務処理を記述していく
-        // 業績を計算するetc
+        // 以下は仮想的な業務処理
         int rand = new Random(System.currentTimeMillis()).nextInt(100);
         if (rand % 5 == 0) {
             // 減給もアリ
