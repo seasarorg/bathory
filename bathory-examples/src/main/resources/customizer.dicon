@@ -23,7 +23,11 @@
     </initMethod>
 <!-- for bathory -->
     <initMethod name="addCustomizer">
-      <arg>statisticsRegistCustomizer</arg>
+      <arg>
+      <component class="org.seasar.framework.container.customizer.AspectCustomizer">
+        <property name="interceptorName">"statisticsRegistInterceptor"</property>
+      </component>
+      </arg>
     </initMethod>
 <!-- for bathory -->
     <initMethod name="addCustomizer">
@@ -49,7 +53,11 @@
       <arg>traceCustomizer</arg>
     </initMethod>
     <initMethod name="addCustomizer">
-      <arg>statisticsCommitCustomizer</arg>
+      <arg>
+        <component class="org.seasar.framework.container.customizer.AspectCustomizer">
+          <property name="interceptorName">"statisticsCommitInterceptor"</property>
+        </component>
+      </arg>
     </initMethod>
     <initMethod name="addCustomizer">
       <arg>requiredTxCustomizer</arg>
@@ -83,8 +91,19 @@
       </arg>
     </initMethod>
     <initMethod name="addCustomizer">
-      <arg>statisticsCommitCustomizer</arg>
+      <arg>
+        <component class="org.seasar.framework.container.customizer.AspectCustomizer">
+          <property name="interceptorName">"statisticsCommitInterceptor"</property>
+        </component>
+      </arg>
     </initMethod>
+  </component>
+<!-- for bathory -->
+
+
+<!-- for bathory -->
+  <component name="savepointCustomizer" class="org.seasar.framework.container.customizer.AspectCustomizer">
+    <property name="interceptorName">"savepointInterceptor"</property>
   </component>
 <!-- for bathory -->
 </components>
