@@ -3,6 +3,9 @@
 	"http://www.seasar.org/dtd/components24.dtd">
 <components>
   <include path="default-customizer.dicon"/>
+<!-- for bathory -->
+  <include path="bathory-customizer.dicon"/>
+<!-- for bathory -->
   
   <component name="serviceCustomizer" class="org.seasar.framework.container.customizer.CustomizerChain">
     <initMethod name="addCustomizer">
@@ -23,11 +26,7 @@
     </initMethod>
 <!-- for bathory -->
     <initMethod name="addCustomizer">
-      <arg>
-      <component class="org.seasar.framework.container.customizer.AspectCustomizer">
-        <property name="interceptorName">"statisticsRegistInterceptor"</property>
-      </component>
-      </arg>
+      <arg>statisticsRegistCustomizer</arg>
     </initMethod>
 <!-- for bathory -->
     <initMethod name="addCustomizer">
@@ -53,11 +52,7 @@
       <arg>traceCustomizer</arg>
     </initMethod>
     <initMethod name="addCustomizer">
-      <arg>
-        <component class="org.seasar.framework.container.customizer.AspectCustomizer">
-          <property name="interceptorName">"statisticsCommitInterceptor"</property>
-        </component>
-      </arg>
+      <arg>statisticsCommitCustomizer</arg>
     </initMethod>
     <initMethod name="addCustomizer">
       <arg>requiredTxCustomizer</arg>
@@ -71,39 +66,14 @@
       <arg>requiredTxCustomizer</arg>
     </initMethod>
     <initMethod name="addCustomizer">
-      <arg>
-        <component class="org.seasar.framework.container.customizer.AspectCustomizer">
-          <initMethod name="addInterceptorName">
-            <arg>"savepointInterceptor"</arg>
-          </initMethod>
-          <property name="pointcut">"consume"</property>
-        </component>
-      </arg>
+      <arg>savepointCustomizer</arg>
     </initMethod>
     <initMethod name="addCustomizer">
-      <arg>
-        <component class="org.seasar.framework.container.customizer.AspectCustomizer">
-          <initMethod name="addInterceptorName">
-            <arg>"partedCommitInterceptor"</arg>
-          </initMethod>
-          <property name="pointcut">"consume"</property>
-        </component>
-      </arg>
+      <arg>partedCommitCustomizer</arg>
     </initMethod>
     <initMethod name="addCustomizer">
-      <arg>
-        <component class="org.seasar.framework.container.customizer.AspectCustomizer">
-          <property name="interceptorName">"statisticsCommitInterceptor"</property>
-        </component>
-      </arg>
+      <arg>statisticsCommitCustomizer</arg>
     </initMethod>
-  </component>
-<!-- for bathory -->
-
-
-<!-- for bathory -->
-  <component name="savepointCustomizer" class="org.seasar.framework.container.customizer.AspectCustomizer">
-    <property name="interceptorName">"savepointInterceptor"</property>
   </component>
 <!-- for bathory -->
 </components>

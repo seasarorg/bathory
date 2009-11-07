@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN" 
+	"http://www.seasar.org/dtd/components24.dtd">
+<components>
+  <component name="savepointCustomizer" class="org.seasar.framework.container.customizer.AspectCustomizer">
+    <property name="interceptorName">"savepointInterceptor"</property>
+    <property name="pointcut">"consume"</property>
+  </component>
+  <component name="statisticsCommitCustomizer" class="org.seasar.framework.container.customizer.AspectCustomizer">
+    <property name="interceptorName">"statisticsCommitInterceptor"</property>
+  </component>
+  <component name="statisticsRegistCustomizer" class="org.seasar.framework.container.customizer.AspectCustomizer">
+    <property name="interceptorName">"statisticsRegistInterceptor"</property>
+  </component>
+  <component name="partedCommitCustomizer" class="org.seasar.framework.container.customizer.AspectCustomizer">
+    <property name="interceptorName">"partedCommitInterceptor"</property>
+    <property name="pointcut">"consume"</property>
+  </component>
+</components>
