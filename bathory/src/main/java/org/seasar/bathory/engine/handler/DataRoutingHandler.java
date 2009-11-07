@@ -88,7 +88,7 @@ public class DataRoutingHandler extends BaseHandler {
         BathoryContext context = BathoryContext.getCurrentInstance();
         ruleClass = context.getDataRoutingRuleClass();
 
-        if (ruleClass != null) {
+        if (ruleClass == null) {
             String divideKey = context.getDataDivideKey();
             if (divideKey == null) {
                 ruleClass = LeastConnectionsDataRoutingRule.class;
