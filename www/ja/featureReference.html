@@ -49,14 +49,14 @@
 
 <h2>Menu</h2>
 <ul>
-	<li><a href="http://bathory.sandbox.seasar.org/ja/index.html">ホーム</a></li>
-	<li><a href="http://bathory.sandbox.seasar.org/ja/concept.html">概要</a></li>
-	<li><a href="http://bathory.sandbox.seasar.org/ja/tutorial.html">チュートリアル </a></li>
-	<li><a href="http://bathory.sandbox.seasar.org/ja/featureReference.html">機能リファレンス</a></li>
-	<li><a href="http://bathory.sandbox.seasar.org/ja/settingReference.html">設定ファイルリファレンス</a></li>
-	<li><a href="http://bathory.sandbox.seasar.org/ja/setup.html">実行環境のセットアップ</a></li>
-	<li><a href="http://bathory.sandbox.seasar.org/ja/releaseNotes.html">リリースノート</a></li>
-	<li><a href="http://bathory.sandbox.seasar.org/ja/roadmap.html">ロードマップ</a></li>
+	<li><a href="./index.html">ホーム</a></li>
+	<li><a href="./concept.html">概要</a></li>
+	<li><a href="./tutorial.html">チュートリアル </a></li>
+	<li><a href="./featureReference.html">機能リファレンス</a></li>
+	<li><a href="./settingReference.html">設定ファイルリファレンス</a></li>
+	<li><a href="./setup.html">実行環境のセットアップ</a></li>
+	<li><a href="./releaseNotes.html">リリースノート</a></li>
+	<li><a href="./roadmap.html">ロードマップ</a></li>
 	<li><a href="https://www.seasar.org/svn/sandbox/bathory/trunk/bathory">SVN リポジトリブラウザ</a></li>
 </ul>
 
@@ -335,7 +335,18 @@ Casketのデータ保持件数のデフォルト値と変更方法について�
 
 
 <h4><a name="Savepoint">セーブポイント</a></h4>
-<p>TBD</p>
+<p>セーブポイントとは、トランザクションをより細かく管理するための仕組みです。
+セーブポイントを使うと、０か１かではなく、中間的なものを定義できる
+作業単位でトランザクション探知を確保可能
+かつ、何かが起きたときに全体ロールバック可能
+</p>
+
+<p>
+	バッチはレコード指向のだよ
+	その単位で個別なトランザクション（セーブポイント）をかけるよ
+</p>
+
+
 <!--
 <p>セーブポイントとは、トランザクションにおける</p>
 <h4>トランザクション=>セーブポイントを絡めた説明？</h4>
@@ -357,13 +368,14 @@ Casketのデータ保持件数のデフォルト値と変更方法について�
 
 
 <h4><a name="Retry">リトライ</a></h4>
+<p>リトライとは、</p>
 <p>TBD</p>
-<p></p>
 
 
 <h4><a name="ReRun">リラン</a></h4>
+<p>リランとは、</p>
+<p>ただ、リラン機能に関してはまだ未実装です</p>
 <p>TBD</p>
-<p></p>
 
 
 <h3><a name="ApplicationSettings">バッチアプリケーション設定情報</a></h3>
