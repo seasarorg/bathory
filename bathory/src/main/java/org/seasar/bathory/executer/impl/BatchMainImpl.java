@@ -15,6 +15,7 @@ import org.seasar.bathory.engine.Consumer;
 import org.seasar.bathory.engine.handler.BaseHandler;
 import org.seasar.bathory.engine.handler.CollectorHandler;
 import org.seasar.bathory.engine.handler.ConsumerHandler;
+import org.seasar.bathory.engine.handler.DataRoutingHandler;
 import org.seasar.bathory.engine.statistics.StatisticsInfo;
 import org.seasar.bathory.engine.statistics.StatisticsRepository;
 import org.seasar.bathory.exception.SystemException;
@@ -66,7 +67,6 @@ public class BatchMainImpl extends BaseBatch implements BatchMain {
         for (int i = 0; i < parallelism; i++) {
             Consumer consumer       = getConsumer(context);
             ConsumerHandler handler = new ConsumerHandler();
-            handler.setCasket(casket);
             handler.setTarget(consumer);
             handler.setName("ConsumerThread#" + String.valueOf(i));
             
@@ -74,9 +74,16 @@ public class BatchMainImpl extends BaseBatch implements BatchMain {
             handler.start();
         }
 
+        DataRoutingHandler dHandler = new DataRoutingHandler();
+        dHandler.setCasket(casket);
+        dHandler.setConsumerHandlers(consumers);
+        dHandler.setName("DataRoutingHandlerThread");
+        dHandler.start();
+        
 
         List<BaseHandler> handlers = new ArrayList<BaseHandler>(parallelism + 1);
         handlers.add(cHandler);
+        handlers.add(dHandler);
         handlers.addAll(consumers);
 
         boolean isTerminated = false;
@@ -89,15 +96,17 @@ public class BatchMainImpl extends BaseBatch implements BatchMain {
                 // 処理が中断されました
                 throw new SystemException(e);
             }
-            isTerminated = isTerminated(handlers);
+            isTerminated = isTerminated(consumers);
         }
     }
     /**
-     * 処理が終了したか確認します.
+     * 消費処理が終了したか確認します.
+     * 何らかの異常で消費処理が終了した場合、収集処理も終了すべきため
+     * CollectorHandlerの生き死にを確認する
      * @param handlers BaseHandler
      * @return 処理が終了したか
      */
-    protected boolean isTerminated(final List<BaseHandler> handlers) {
+    protected boolean isTerminated(final List<ConsumerHandler> handlers) {
         boolean isTerminated = true;
         for (int i = 0; i < handlers.size(); i++) {
             BaseHandler handler = handlers.get(i);

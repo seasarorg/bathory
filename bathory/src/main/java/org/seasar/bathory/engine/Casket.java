@@ -39,20 +39,20 @@ public class Casket {
             queue.put(value);
         } catch (InterruptedException e) {
             // 収集が終了していないのにConsumerの処理が中断
-            throw new SystemException();
+            throw new SystemException(e);
         }
     }
 
     /**
-     * 収集データを消費する.
+     * 格納されたデータを取得します.
      * @return 収集したデータ
      */
-    public Map<String, Object> consume() {
+    public Map<String, Object> violate() {
         try {
             return queue.take();
         } catch (InterruptedException e) {
             // 収集が終了していないのにConsumerの処理が中断
-            throw new SystemException();
+            throw new SystemException(e);
         }
     }
 

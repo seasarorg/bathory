@@ -12,6 +12,8 @@ import org.seasar.bathory.engine.Collector;
 public class CollectorHandler extends BaseHandler {
     /** 処理するCollectorクラス. */
     private Collector target;
+    /** データ格納クラス. */
+    private Casket container;
 
     /**
      * 処理を実行します.
@@ -20,7 +22,6 @@ public class CollectorHandler extends BaseHandler {
      */
     @Override
     void execute() throws Exception {
-        Casket container = getCasket();
         try {
             target.collect(container);
         } finally {
@@ -29,6 +30,14 @@ public class CollectorHandler extends BaseHandler {
                 container.put(Constants.END_OF_DATA);
             }
         }
+    }
+
+    /**
+     * Casketを設定します.
+     * @param casket Casket
+     */
+    public void setCasket(final Casket casket) {
+        container = casket;
     }
 
     /**

@@ -83,7 +83,7 @@ public class BatchExecuterImpl extends BaseBatch implements BatchExecuter {
         main.main();
         terminator.terminate();
     }
-    
+
     /**
      * 事後ログを出力します.
      */

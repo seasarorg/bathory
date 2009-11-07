@@ -4,7 +4,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.seasar.bathory.def.Constants.RunState;
 import org.seasar.bathory.engine.BathoryContext;
-import org.seasar.bathory.engine.Casket;
 import org.seasar.bathory.exception.ExitException;
 import org.seasar.bathory.exception.RecoverableException;
 
@@ -18,8 +17,6 @@ public abstract class BaseHandler extends Thread {
     private RunState runState;
     /** BathoryContext. */
     private BathoryContext context;
-    /** データ格納クラス. */
-    private Casket container;
     /** Log. */
     private static final Log LOG = LogFactory.getLog(BaseHandler.class);
 
@@ -70,22 +67,6 @@ public abstract class BaseHandler extends Thread {
      */
     protected BathoryContext getContext() {
         return context;
-    }
-
-    /**
-     * Casketを設定します.
-     * @param casket Casket
-     */
-    public void setCasket(final Casket casket) {
-        container = casket;
-    }
-
-    /**
-     * Casketを取得します.
-     * @return Casket
-     */
-    public Casket getCasket() {
-        return container;
     }
 
     /**

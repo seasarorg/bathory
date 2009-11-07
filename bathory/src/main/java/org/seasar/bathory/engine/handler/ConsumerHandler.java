@@ -1,11 +1,14 @@
 package org.seasar.bathory.engine.handler;
 
 import java.util.Map;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 import javax.transaction.UserTransaction;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.seasar.bathory.def.Application;
 import org.seasar.bathory.def.Constants;
 import org.seasar.bathory.engine.Consumer;
 import org.seasar.bathory.exception.SystemException;
@@ -24,6 +27,37 @@ public class ConsumerHandler extends BaseHandler {
 
     /** Consumer. */
     private Consumer target;
+    /** Queueのバッファ容量. */
+    private static final int QUEUE_SIZE = Application.getApplication().getQueueSize();
+    /** Feed Box. */
+    private BlockingQueue<Map<String, Object>> feedbox;
+
+    /**
+     * コンストラクタ.
+     */
+    public ConsumerHandler() {
+        feedbox = new ArrayBlockingQueue<Map<String, Object>>(QUEUE_SIZE);
+    }
+
+    /**
+     * Consumerへデータを引き渡します.
+     * @param food Consumerへ引き渡すデータ
+     */
+    public void feed(final Map<String, Object> food) {
+        try {
+            feedbox.put(food);
+        } catch (InterruptedException e) {
+            throw new SystemException(e);
+        }
+    }
+
+    /**
+     * 未処理のデータ数を取得します.
+     * @return 未処理のデータ数
+     */
+    public int getUndigestedFoodSize() {
+        return feedbox.size();
+    }
 
     /**
      * 処理を実行します.
@@ -85,7 +119,13 @@ public class ConsumerHandler extends BaseHandler {
     private void mainImpl() {
         boolean isEnded = false;
         while (!isEnded) {
-            Map<String, Object> values = getCasket().consume();
+            Map<String, Object> values;
+            try {
+                values = feedbox.take();
+            } catch (InterruptedException e) {
+                isEnded = true;
+                throw new SystemException(e);
+            }
             if (Constants.END_OF_DATA.equals(values)) {
                 isEnded = true;
             } else if (getContext().isRollbackOnly()) {

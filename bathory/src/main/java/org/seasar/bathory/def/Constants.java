@@ -31,23 +31,29 @@ public class Constants {
      */
     public static final class ContextKeys {
         /** 識別名キー. */
-        public static final String IDENT_NAME         = "identName";
+        public static final String IDENT_NAME              = "identName";
         /** ジョブIDキー. */
-        public static final String JOBID              = "jobId";
+        public static final String JOBID                   = "jobId";
         /** バッチIDキー. */
-        public static final String BATCHID            = "batchId";
+        public static final String BATCHID                 = "batchId";
         /** 並列度指定キー. */
-        public static final String PARALLELISM        = "parallelism";
+        public static final String PARALLELISM             = "parallelism";
         /** リトライ回数指定キー. */
-        public static final String RETRY_COUNT        = "retryCount";
+        public static final String RETRY_COUNT             = "retryCount";
         /** 分割コミットキー. */
-        public static final String COMMIT_COUNT       = "commitCount";
+        public static final String COMMIT_COUNT            = "commitCount";
         /** collector名指定キー. */
-        public static final String COLLECTORNAME      = "collectorName";
+        public static final String COLLECTORNAME           = "collectorName";
         /** consumer名指定キー. */
-        public static final String CONSUMERNAME       = "consumerName";
+        public static final String CONSUMERNAME            = "consumerName";
         /** 開始時間キー. */
-        public static final String STARTDATETIME      = "startDatetime";
+        public static final String STARTDATETIME           = "startDatetime";
+        /** 分割キー. */
+        public static final String DATA_DIVIDE_KEY         = "dataDivideKey";
+        /** データルーティングクラス名. */
+        public static final String DATA_ROUTING_RULE_NAME  = "dataRoutingRuleClassName";
+        /** データルーティングクラス. */
+        public static final String DATA_ROUTING_RULE_CLASS = "dataRoutingRuleClass";
 
         /**
          * インスタンス化禁止.

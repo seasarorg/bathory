@@ -15,6 +15,7 @@ import org.seasar.bathory.def.Constants.ContextKeys;
 import org.seasar.bathory.engine.BathoryContext;
 import org.seasar.bathory.exception.IllegalCommandArgumentException;
 import org.seasar.framework.beans.util.BeanUtil;
+import org.seasar.framework.util.ClassUtil;
 
 import static org.seasar.bathory.def.Application.getApplication;
 
@@ -55,6 +56,7 @@ public class BatchExecuterHelper {
     private static BathoryContext getContext(final Map params) {
         validate(params);
         setDefaultValues(params);
+        setDataRoutingClass(params);
         BathoryContext context = new BathoryContext();
         BathoryContext.setCurrentInstance(context);
         BeanUtil.copyProperties(params, context);
@@ -123,4 +125,20 @@ public class BatchExecuterHelper {
             props.put(ContextKeys.IDENT_NAME, jobId + batchId + format.format(now));
         }
     }
+
+    /**
+     * DataRoutingClassを設定します.
+     * @param params パラメータ
+     */
+    private static void setDataRoutingClass(final Map params) {
+        String className = (String) params.get(ContextKeys.DATA_ROUTING_RULE_NAME);
+        if (className == null) {
+            return;
+        }
+        if (className != null) {
+            Class<? extends DataRoutingRule> rule = ClassUtil.forName(className);
+            params.put(ContextKeys.DATA_ROUTING_RULE_CLASS, rule);
+        }
+    }
+
 }

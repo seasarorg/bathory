@@ -19,4 +19,6 @@
   <component name="batchMain"        class="org.seasar.bathory.executer.impl.BatchMainImpl"/>
   <component name="batchTerminator"  class="org.seasar.bathory.executer.impl.BatchTerminatorImpl"/>
 
+  <component name="keyDividedDataRoutingRule"       class="org.seasar.bathory.engine.datarouting.KeyDividedDataRoutingRule"/>
+  <component name="leastConnectionsDataRoutingRule" class="org.seasar.bathory.engine.datarouting.LeastConnectionsDataRoutingRule"/>
 </components>

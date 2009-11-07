@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Map;
 
 import org.seasar.bathory.def.Application;
+import org.seasar.bathory.executer.DataRoutingRule;
 
 
 /**
@@ -27,6 +28,11 @@ public class BathoryContext {
     private String jobId;
     /** バッチID. */
     private String batchId;
+    /** 分割キー. */
+    private String dataDivideKey;
+    /** DataRoutingRuleクラス. */
+    private Class<? extends DataRoutingRule> dataRoutingRuleClass;
+
     /** バッチ開始時間. */
     private Date startDate;
     /** 収集モジュール名. */
@@ -162,6 +168,39 @@ public class BathoryContext {
     public void setBatchId(final String id) {
         this.batchId = id;
     }
+
+    /**
+     * データ分割キーを取得します.
+     * @return データ分割キー
+     */
+    public String getDataDivideKey() {
+        return dataDivideKey;
+    }
+
+    /**
+     * データ分割キーを設定します.
+     * @param key データ分割キー
+     */
+    public void setDataDivideKey(final String key) {
+        this.dataDivideKey = key;
+    }
+
+    /**
+     * DataRoutingRuleクラスを取得します.
+     * @return DataRoutingRuleクラス
+     */
+    public Class<? extends DataRoutingRule> getDataRoutingRuleClass() {
+        return dataRoutingRuleClass;
+    }
+
+    /**
+     * DataRoutingRuleクラスを設定します.
+     * @param clazz DataRoutingRuleクラス
+     */
+    public void setDataRoutingRuleClass(final Class<? extends DataRoutingRule> clazz) {
+        this.dataRoutingRuleClass = clazz;
+    }
+
 
     /**
      * バッチを開始した時間を取得します.
