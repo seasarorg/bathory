@@ -72,10 +72,68 @@
 <div class="section">
 
 <h2>統計情報</h2>
-<h3><a name="Statistics">統計情報</a></h3>
-<!-- TODO TBD -->
-<p>TBD</p>
-<p></p>
+<h3><a name="StatisticsInBatchApplication">バッチアプリケーションにおける統計情報</a></h3>
+<p>バッチアプリケーションの統計情報（どれくらいの件数のデータをどれくらいの時間で処理したか）は、以下のような用途に使用することが可能です。
+<ul>
+	<li>パフォーマンス障害時の早期発見・問題解析のインプット情報</li>
+	<li>ハードウェアリソース増強のためのインプット情報</li>
+</ul>
+</p>
+<h3><a name="AvailableStatisticsInformations">bathoryにて利用可能な統計情報</a></h3>
+<p>bathoryでは、デフォルトの状態で以下の統計情報を参照することが可能です。
+<ul>
+	<li>正常処理件数</li>
+	<li>警告処理件数</li>
+	<li>異常処理件数</li>
+	<li>全体処理件数</li>
+	<li>全体処理時間</li>
+</ul>
+</p>
+<h3><a name="restriction">制約事項</a></h3>
+<p>
+利用するプロダクトにより取得可能な統計情報に差異があります。
+<table border="1px">
+	<thead>
+		<th>
+			<td>取得データに対する処理時間</td>
+			<td>SQL処理に関する処理時間</td>
+		</th>
+	</thead>
+	<tbody>
+		<tr>
+			<td>S2Dao</td>
+			<td style="text-align : center">○</td>
+			<td style="text-align : center">○</td>
+		</tr>
+		<tr>
+			<td>S2JDBC</td>
+			<td style="text-align : center">○</td>
+			<td style="text-align : center">×</td>
+		</tr>
+	</tbody>
+</table>
+
+
+</p>
+
+<p>統計情報を可視化のための方法は提供していません。（ログ出力のみ）
+そのため、必要に応じて各アプリケーションにて加工を行ってください。
+以下のような記述で、統計情報へアクセスすることが可能です。
+<div class="source"><pre>
+Map<String, StatisticsInfo> statisticInfoMap =
+        StatisticsRepository.getCurrentStatisticsMap();
+    if (statisticInfoMap != null) {
+        for (Iterator&lt;StatisticsInfo&gt; it = statisticInfoMap.values().iterator();
+            it.hasNext();) {
+			// 統計情報格納クラス
+            StatisticsInfo statisticsInfo = it.next();
+			// 何らかの処理
+        }
+    }
+}
+
+</pre></div>
+</p>
 
 </div><!-- section -->
 
