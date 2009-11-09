@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta http-equiv="Content-Language" content="ja" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta name="keywords" content="bathory, Seasar, The Seasar Project, The Seasar Foundation, OSS, Open Source Software, Java, Batch, Framework" />
+<meta name="description" content="bathory" />
+<title>well come to bathroy project</title>
+<link rel="stylesheet" type="text/css" href="http://www.seasar.org/theme/main.css" media="screen,projection" />
+<link rel="stylesheet" type="text/css" href="http://www.seasar.org/theme/print.css" media="print" />
+</head>
+
+<body>
+
+<div id="wrapper">
+
+<div id="header">
+
+<div class="line"><span class="hide">spacer</span></div>
+
+<div id="logo"><h2 id="h01" class="hide">The Seasar Foundation Project Site</h2><img src="http://www.seasar.org/images/seasar_logo_blue.gif" alt="The Seasar Project" width="390" height="180" /></div>
+
+<div id="tool">
+
+<h2><a href="http://search.seasar.org/">Site Search</a></h2>
+
+<form id="search" name="search" action="http://search.seasar.org/">
+<div>
+	<input id="search_phrase" type="text" name="phrase" size="20" />
+	<input type="hidden" name="perpage" value="30" />
+	<input type="hidden" name="enc" value="UTF-8" />
+	<input id="search_go" type="submit" value="Search" />
+</div>
+</form>
+
+<h2>Seasar Banner</h2>
+
+<p><a href="http://www.seasar.org/images/seasar_banner.gif"><img src="http://www.seasar.org/images/seasar_banner.gif" alt="Seasar Banner" title="Seasar Banner" width="146" height="33" /></a></p>
+
+</div>
+
+</div><!-- header -->
+
+
+<div id="contents_left">
+
+
+<h2>Menu</h2>
+<ul>
+	<li><a href="../top/index.html">ホーム</a></li>
+	<li><a href="../concept/index.html">概要</a></li>
+	<li><a href="../tutorial/index.html">チュートリアル </a></li>
+	<li><a href="../featureReference/index.html">機能リファレンス</a></li>
+	<li><a href="../settingReference/index.html">設定ファイルリファレンス</a></li>
+	<li><a href="../setup/index.html">実行環境のセットアップ</a></li>
+	<li><a href="../releaseNotes/index.html">リリースノート</a></li>
+	<li><a href="../roadmap/index.html">ロードマップ</a></li>
+	<li><a href="https://www.seasar.org/svn/sandbox/bathory/trunk/bathory">SVN リポジトリブラウザ</a></li>
+</ul>
+
+
+
+</div><!-- contents_left -->
+
+
+<div id="contents_center">
+
+<div id="article">
+
+
+<div class="section">
+<h2>アプリケーション設定情報</h2>
+<h3><a name="WhatIsApplicationSettings">アプリケーション設定情報とは</a></h3>
+<p>bathoryでは、アプリケーション全体に関する設定を、設定ファイルにて変更することが可能です。</p>
+<p>以下に、設定可能な項目の一覧及び規定値、変更方法を説明します。</p>
+<h3><a name="ApplicationDefaultValues">アプリケーション規定値</a></h3>
+<p>bathroyでは、以下の用な設定項目があり、規定値では以下のように設定しています。</p>
+<table border="1px">
+	<th>
+		<td>キー名</td>
+		<td>説明</td>
+		<td>値</td>
+	</th>
+	<tr>
+		<td>1</td>
+		<td>successCode</td>
+		<td>バッチが正常に終了した際の終了コード</td>
+		<td>0</td>
+	</tr>
+	<tr>
+		<td>2</td>
+		<td>warnCode</td>
+		<td>回復可能な例外（セーブポイントまでのロールバック）が一回以上発生した際の終了コード</td>
+		<td>1</td>
+	</tr>
+	<tr>
+		<td>3</td>
+		<td>errorCode</td>
+		<td>回復可能な例外が発生した際の終了コード</td>
+		<td>10</td>
+	</tr>
+	<tr>
+		<td>4</td>
+		<td>rollbackBorder</td>
+		<td>トランザクションの全体をロールバックする終了コード値</td>
+		<td>10</td>
+	</tr>
+	<tr>
+		<td>5</td>
+		<td>queueSize</td>
+		<td>Casketに保持するキューの大きさ</td>
+		<td>100</td>
+	</tr>
+	<tr>
+		<td>6</td>
+		<td>defaultParallelism</td>
+		<td>並列度を指定しなかった際に選択される並列度</td>
+		<td>1</td>
+	</tr>
+	<tr>
+		<td>7</td>
+		<td>defaultRetryCount</td>
+		<td>リトライ回数を指定しなかった際に選択されるリトライ回数</td>
+		<td>1</td>
+	</tr>
+	<tr>
+		<td>8</td>
+		<td>defaultCommitCount</td>
+		<td>コミット回数を指定しなかった際に選択されるコミット回数。0を指定すると途中でコミットを発行せず、ひとつのトランザクションとして動作します</td>
+		<td>0</td>
+	</tr>
+</table>
+
+
+<h3><a name="ConfigureApplicationSettings">アプリケーション設定値変更方法</a></h3>
+<p>クラスパスが通っているディレクトリへBATSetting.propetiesというファイルを用意してください。
+そして、設定値を変更したい項目を定義してください。
+設定を記述した項目のみ設定が変更され、それ以外は規定値となります。
+</p>
+<p>終了コードの値を変更したい場合は以下のように記述します。</p>
+<div class="source"><pre>
+warnCode=5
+errorCode=99
+</pre></div>
+
+</div><!-- section -->
+
+</div><!-- article -->
+
+</div><!-- contents_center -->
+
+<div id="footer">
+<address>&copy; Copyright The Seasar Foundation and the others 2009, all rights reserved.</address>
+<div class="line"><span class="hide">spacer</span></div>
+</div><!-- footer -->
+
+</div><!-- wrapper -->
+
+</body>
+</html>
+

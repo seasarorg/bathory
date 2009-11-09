@@ -1,0 +1,197 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta http-equiv="Content-Language" content="ja" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta name="keywords" content="bathory, Seasar, The Seasar Project, The Seasar Foundation, OSS, Open Source Software, Java, Batch, Framework" />
+<meta name="description" content="bathory" />
+<title>well come to bathroy project</title>
+<link rel="stylesheet" type="text/css" href="http://www.seasar.org/theme/main.css" media="screen,projection" />
+<link rel="stylesheet" type="text/css" href="http://www.seasar.org/theme/print.css" media="print" />
+</head>
+
+<body>
+
+<div id="wrapper">
+
+<div id="header">
+
+<div class="line"><span class="hide">spacer</span></div>
+
+<div id="logo"><h2 id="h01" class="hide">The Seasar Foundation Project Site</h2><img src="http://www.seasar.org/images/seasar_logo_blue.gif" alt="The Seasar Project" width="390" height="180" /></div>
+
+<div id="tool">
+
+<h2><a href="http://search.seasar.org/">Site Search</a></h2>
+
+<form id="search" name="search" action="http://search.seasar.org/">
+<div>
+	<input id="search_phrase" type="text" name="phrase" size="20" />
+	<input type="hidden" name="perpage" value="30" />
+	<input type="hidden" name="enc" value="UTF-8" />
+	<input id="search_go" type="submit" value="Search" />
+</div>
+</form>
+
+<h2>Seasar Banner</h2>
+
+<p><a href="http://www.seasar.org/images/seasar_banner.gif"><img src="http://www.seasar.org/images/seasar_banner.gif" alt="Seasar Banner" title="Seasar Banner" width="146" height="33" /></a></p>
+
+</div>
+
+</div><!-- header -->
+
+
+<div id="contents_left">
+
+
+<h2>Menu</h2>
+<ul>
+	<li><a href="../top/index.html">ホーム</a></li>
+	<li><a href="../concept/index.html">概要</a></li>
+	<li><a href="../tutorial/index.html">チュートリアル </a></li>
+	<li><a href="../featureReference/index.html">機能リファレンス</a></li>
+	<li><a href="../settingReference/index.html">設定ファイルリファレンス</a></li>
+	<li><a href="../setup/index.html">実行環境のセットアップ</a></li>
+	<li><a href="../releaseNotes/index.html">リリースノート</a></li>
+	<li><a href="../roadmap/index.html">ロードマップ</a></li>
+	<li><a href="https://www.seasar.org/svn/sandbox/bathory/trunk/bathory">SVN リポジトリブラウザ</a></li>
+</ul>
+
+
+
+</div><!-- contents_left -->
+
+
+<div id="contents_center">
+
+<div id="article">
+
+
+<div class="section">
+
+<h2>起動オプション</h2>
+<h3><a name="AvailableOptions">指定可能な起動オプション</a></h3>
+<p>バッチアプリケーションを起動する際に指定可能な起動オプションは以下のとおり。</p>
+<table border="1px">
+	<th>
+		<td>オプション</td>
+		<td>日本語名</td>
+		<td>省略可否</td>
+		<td>デフォルト値</td>
+		<td>説明</td>
+		<td>例</td>
+	</th>
+	<tr>
+		<td>1</td>
+		<td>jobId</td>
+		<td>ジョブID</td>
+		<td>不可</td>
+		<td>-</td>
+		<td>ジョブスケジューラへジョブとして登録する際のID</td>
+		<td>job1</td>
+	</tr>
+	<tr>
+		<td>2</td>
+		<td>batchId</td>
+		<td>バッチID</td>
+		<td>不可</td>
+		<td>-</td>
+		<td>バッチアプリケーションのID。通常はこのIDを基にしたCollectorとConsumerを使用します。</td>
+		<td>batch1</td>
+	</tr>
+	<tr>
+		<td>3</td>
+		<td>parallelism</td>
+		<td>Consumerの並列度</td>
+		<td>可</td>
+		<td>1</td>
+		<td><a href="../featureReference/concurrent.html">並列処理</a>参照</td></td>
+		<td>3</td>
+	</tr>
+	<tr>
+		<td>4</td>
+		<td>retryCount</td>
+		<td>リトライ回数</td>
+		<td>可</td>
+		<td>1</td>
+		<td><a href="../featureReference/transaction.html#Retry">リトライ</a>参照</td></td>
+		<td>3</td>
+	</tr>
+	<tr>
+		<td>5</td>
+		<td>commitCount</td>
+		<td>コミットカウント</td>
+		<td>可</td>
+		<td>0</td>
+		<td><a href="../featureReference/transaction.html#CommitPoint">コミットポイント</a>参照</td>
+		<td>1000000</td>
+	</tr>
+	<tr>
+		<td>6</td>
+		<td>identName</td>
+		<td>バッチ識別子</td>
+		<td>可</td>
+		<td>jobId + batchId + 現在日時(yyyyMMddhh24mmssSSS)</td>
+		<td>統計情報のキー情報等に使用します。</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>7</td>
+		<td>collectorName</td>
+		<td>Collectorの名称</td>
+		<td>可</td>
+		<td>jobId + Collector</td>
+		<td>デフォルト以外のCollectorを指定したい際に使用します。</td>
+		<td>testCollector</td>
+	</tr>
+	<tr>
+		<td>8</td>
+		<td>consumerName</td>
+		<td>Consumerの名称</td>
+		<td>可</td>
+		<td>jobId + Consumer</td>
+		<td>デフォルト以外のConsumerを指定したい際に使用します。</td>
+		<td>testConsumer</td>
+	</tr>
+	<tr>
+		<td>9</td>
+		<td>dataDivideKey</td>
+		<td>並行処理を行う際、トランザクションを分割するキーの名称 （Consumerのフィールド名）</td>
+		<td>可</td>
+		<td>なし</td>
+		<!-- TODO キー分割へのリンクへ変更する -->
+		<td>キーによってトランザクションを分割する際に使用します。 <a href="../featureReference/concurrent.html">並列処理</a>参照</td>
+		<td>testId</td>
+	</tr>
+	<tr>
+		<td>10</td>
+		<td>dataRoutingRuleClassName</td>
+		<td>独自のルーティングを行う際のクラス名(FQDN)</td>
+		<td>可</td>
+		<td>なし</td>
+		<!-- TODO キー分割へのリンクへ変更する -->
+		<td>デフォルト以外のルーティングルールでトランザクションを分割したい際に使用します。 <a href="../featureReference/concurrent.html">並列処理</a>参照</td>
+		<td>test.routing.TestRouting</td>
+	</tr>
+</table>
+
+
+</div><!-- section -->
+
+</div><!-- article -->
+
+</div><!-- contents_center -->
+
+<div id="footer">
+<address>&copy; Copyright The Seasar Foundation and the others 2009, all rights reserved.</address>
+<div class="line"><span class="hide">spacer</span></div>
+</div><!-- footer -->
+
+</div><!-- wrapper -->
+
+</body>
+</html>
+

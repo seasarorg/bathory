@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta http-equiv="Content-Language" content="ja" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta name="keywords" content="bathory, Seasar, The Seasar Project, The Seasar Foundation, OSS, Open Source Software, Java, Batch, Framework" />
+<meta name="description" content="bathory" />
+<title>well come to bathroy project</title>
+<link rel="stylesheet" type="text/css" href="http://www.seasar.org/theme/main.css" media="screen,projection" />
+<link rel="stylesheet" type="text/css" href="http://www.seasar.org/theme/print.css" media="print" />
+</head>
+
+<body>
+
+<div id="wrapper">
+
+<div id="header">
+
+<div class="line"><span class="hide">spacer</span></div>
+
+<div id="logo"><h2 id="h01" class="hide">The Seasar Foundation Project Site</h2><img src="http://www.seasar.org/images/seasar_logo_blue.gif" alt="The Seasar Project" width="390" height="180" /></div>
+
+<div id="tool">
+
+<h2><a href="http://search.seasar.org/">Site Search</a></h2>
+
+<form id="search" name="search" action="http://search.seasar.org/">
+<div>
+	<input id="search_phrase" type="text" name="phrase" size="20" />
+	<input type="hidden" name="perpage" value="30" />
+	<input type="hidden" name="enc" value="UTF-8" />
+	<input id="search_go" type="submit" value="Search" />
+</div>
+</form>
+
+<h2>Seasar Banner</h2>
+
+<p><a href="http://www.seasar.org/images/seasar_banner.gif"><img src="http://www.seasar.org/images/seasar_banner.gif" alt="Seasar Banner" title="Seasar Banner" width="146" height="33" /></a></p>
+
+</div>
+
+</div><!-- header -->
+
+
+<div id="contents_left">
+
+<h2>Menu</h2>
+<ul>
+	<li><a href="../top/index.html">ホーム</a></li>
+	<li><a href="../concept/index.html">概要</a></li>
+	<li><a href="../tutorial/index.html">チュートリアル </a></li>
+	<li><a href="../featureReference/index.html">機能リファレンス</a></li>
+	<li><a href="../settingReference/index.html">設定ファイルリファレンス</a></li>
+	<li><a href="../setup/index.html">実行環境のセットアップ</a></li>
+	<li><a href="../releaseNotes/index.html">リリースノート</a></li>
+	<li><a href="../roadmap/index.html">ロードマップ</a></li>
+	<li><a href="https://www.seasar.org/svn/sandbox/bathory/trunk/bathory">SVN リポジトリブラウザ</a></li>
+</ul>
+
+
+
+</div><!-- contents_left -->
+
+
+<div id="contents_center">
+
+<div id="article">
+
+<div class="section">
+
+
+<h2>セットアップ</h2>
+
+<h3>ブランクのセットアップ（共通）</h3>
+<p>プロジェクトの雛形は、DoltengというEclipseのプラグインを使って作成します。 Doltengのインストールは<a href="http://dolteng.sandbox.seasar.org/#Setup">こちら</a>を参照してください。</p>
+<p>Doltengでプロジェクトを作成すると、デフォルトのデータベースとして、H2がインストールされます。 H2でとりあえず試してみたい場合はDbLauncherをTomcat Launcherと同じように、 インストールしてください。</p>
+<p>Doltengの設定を確認します。 「Window」-「Preferences」でDoltengの設定ダイアログを開いてください。 Maven2を使わない場合は、Download resources from onlineのチェックボックスをオフにします。 Maven2を使う場合は、Maven Repository Pathを設定してください。</p>
+<p>プロジェクトの作成は、<a href="http://dolteng.sandbox.seasar.org/usage.html#project-wizard">こちら</a>を参照してください。 Application Typeには「Standard Application」Persistenceには「S2JDBC」もしくは「S2Dao」を選択してください。</p>
+
+
+
+<h3>ブランクのセットアップ（S2JDBC）</h3>
+<p><a href="./s2jdbc.html">S2JDBCを使用したブランクプロジェクトのセットアップ</a></p>
+
+
+<h3>ブランクのセットアップ（S2Dao）</h3>
+<p><a href="./s2dao.html">S2Daoを使用したブランクプロジェクトのセットアップ</a></p>
+
+
+<h3>チュートリアルのセットアップ</h3>
+<p>TBD</p>
+
+
+</div><!-- section -->
+
+</div><!-- article -->
+
+</div><!-- contents_center -->
+
+<div id="footer">
+<address>&copy; Copyright The Seasar Foundation and the others 2009, all rights reserved.</address>
+<div class="line"><span class="hide">spacer</span></div>
+</div><!-- footer -->
+
+</div><!-- wrapper -->
+
+</body>
+</html>
+

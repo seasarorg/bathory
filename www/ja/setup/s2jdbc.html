@@ -1,0 +1,279 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta http-equiv="Content-Language" content="ja" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta name="keywords" content="bathory, Seasar, The Seasar Project, The Seasar Foundation, OSS, Open Source Software, Java, Batch, Framework" />
+<meta name="description" content="bathory" />
+<title>well come to bathroy project</title>
+<link rel="stylesheet" type="text/css" href="http://www.seasar.org/theme/main.css" media="screen,projection" />
+<link rel="stylesheet" type="text/css" href="http://www.seasar.org/theme/print.css" media="print" />
+</head>
+
+<body>
+
+<div id="wrapper">
+
+<div id="header">
+
+<div class="line"><span class="hide">spacer</span></div>
+
+<div id="logo"><h2 id="h01" class="hide">The Seasar Foundation Project Site</h2><img src="http://www.seasar.org/images/seasar_logo_blue.gif" alt="The Seasar Project" width="390" height="180" /></div>
+
+<div id="tool">
+
+<h2><a href="http://search.seasar.org/">Site Search</a></h2>
+
+<form id="search" name="search" action="http://search.seasar.org/">
+<div>
+	<input id="search_phrase" type="text" name="phrase" size="20" />
+	<input type="hidden" name="perpage" value="30" />
+	<input type="hidden" name="enc" value="UTF-8" />
+	<input id="search_go" type="submit" value="Search" />
+</div>
+</form>
+
+<h2>Seasar Banner</h2>
+
+<p><a href="http://www.seasar.org/images/seasar_banner.gif"><img src="http://www.seasar.org/images/seasar_banner.gif" alt="Seasar Banner" title="Seasar Banner" width="146" height="33" /></a></p>
+
+</div>
+
+</div><!-- header -->
+
+
+<div id="contents_left">
+
+<h2>Menu</h2>
+<ul>
+	<li><a href="../top/index.html">ホーム</a></li>
+	<li><a href="../concept/index.html">概要</a></li>
+	<li><a href="../tutorial/index.html">チュートリアル </a></li>
+	<li><a href="../featureReference/index.html">機能リファレンス</a></li>
+	<li><a href="../settingReference/index.html">設定ファイルリファレンス</a></li>
+	<li><a href="../setup/index.html">実行環境のセットアップ</a></li>
+	<li><a href="../releaseNotes/index.html">リリースノート</a></li>
+	<li><a href="../roadmap/index.html">ロードマップ</a></li>
+	<li><a href="https://www.seasar.org/svn/sandbox/bathory/trunk/bathory">SVN リポジトリブラウザ</a></li>
+</ul>
+
+
+
+</div><!-- contents_left -->
+
+
+<div id="contents_center">
+
+<div id="article">
+
+<div class="section">
+
+
+<h2>セットアップ</h2>
+
+<h3>ブランクのセットアップ（共通）</h3>
+<p>プロジェクトの雛形は、DoltengというEclipseのプラグインを使って作成します。 Doltengのインストールは<a href="http://dolteng.sandbox.seasar.org/#Setup">こちら</a>を参照してください。</p>
+<p>Doltengでプロジェクトを作成すると、デフォルトのデータベースとして、H2がインストールされます。 H2でとりあえず試してみたい場合はDbLauncherをTomcat Launcherと同じように、 インストールしてください。</p>
+<p>Doltengの設定を確認します。 「Window」-「Preferences」でDoltengの設定ダイアログを開いてください。 Maven2を使わない場合は、Download resources from onlineのチェックボックスをオフにします。 Maven2を使う場合は、Maven Repository Pathを設定してください。</p>
+<p>プロジェクトの作成は、<a href="http://dolteng.sandbox.seasar.org/usage.html#project-wizard">こちら</a>を参照してください。 Application Typeには「Standard Application」Persistenceには「S2JDBC」もしくは「S2Dao」を選択してください。</p>
+
+
+
+<h3>ブランクのセットアップ（S2JDBC）</h3>
+<p>以下のようなbathory特有の設定を行います。</p>
+
+
+<h4>app.dicon</h4>
+<p>生成直後。</p>
+
+<div class="source"><pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE components PUBLIC &quot;-//SEASAR//DTD S2Container 2.4//EN&quot; 
+	&quot;http://www.seasar.org/dtd/components24.dtd&quot;&gt;
+&lt;components&gt;
+  &lt;include path=&quot;convention.dicon&quot;/&gt;
+  &lt;include path=&quot;aop.dicon&quot;/&gt;
+  &lt;include path=&quot;s2jdbc.dicon&quot;/&gt;
+&lt;/components&gt;
+</pre></div>
+
+<p>変換後。</p>
+<div class="source"><pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE components PUBLIC &quot;-//SEASAR//DTD S2Container 2.4//EN&quot; 
+	&quot;http://www.seasar.org/dtd/components24.dtd&quot;&gt;
+&lt;components&gt;
+  &lt;include path=&quot;convention.dicon&quot;/&gt;
+  &lt;include path=&quot;aop.dicon&quot;/&gt;
+  &lt;include path=&quot;s2jdbc.dicon&quot;/&gt;
+
+&lt;!-- for bathory --&gt;
+  &lt;include path=&quot;bathory.dicon&quot;/&gt;
+&lt;!-- for bathory --&gt;
+
+&lt;/components&gt;
+</pre></div>
+
+
+<h4>creator.dicon</h4>
+<p>生成直後。</p>
+
+<div class="source"><pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE components PUBLIC &quot;-//SEASAR//DTD S2Container 2.4//EN&quot; 
+	&quot;http://www.seasar.org/dtd/components24.dtd&quot;&gt;
+&lt;components&gt;
+  &lt;include path=&quot;customizer.dicon&quot;/&gt;
+  &lt;include path=&quot;convention.dicon&quot;/&gt;
+  &lt;component name=&quot;actionCreator&quot; class=&quot;org.seasar.framework.container.creator.ActionCreator&quot;/&gt;
+  &lt;component name=&quot;converterCreator&quot; class=&quot;org.seasar.framework.container.creator.ConverterCreator&quot;/&gt;
+  &lt;component name=&quot;daoCreator&quot; class=&quot;org.seasar.framework.container.creator.DaoCreator&quot;/&gt;
+  &lt;component name=&quot;dtoCreator&quot; class=&quot;org.seasar.framework.container.creator.DtoCreator&quot;/&gt;
+  &lt;component name=&quot;dxoCreator&quot; class=&quot;org.seasar.framework.container.creator.DxoCreator&quot;/&gt;
+  &lt;component name=&quot;helperCreator&quot; class=&quot;org.seasar.framework.container.creator.HelperCreator&quot;/&gt;
+  &lt;component name=&quot;interceptorCreator&quot; class=&quot;org.seasar.framework.container.creator.InterceptorCreator&quot;/&gt;
+  &lt;component name=&quot;logicCreator&quot; class=&quot;org.seasar.framework.container.creator.LogicCreator&quot;/&gt;
+  &lt;component name=&quot;pageCreator&quot; class=&quot;org.seasar.framework.container.creator.PageCreator&quot;/&gt;
+  &lt;component name=&quot;serviceCreator&quot; class=&quot;org.seasar.framework.container.creator.ServiceCreator&quot;/&gt;
+  &lt;component name=&quot;validatorCreator&quot; class=&quot;org.seasar.framework.container.creator.ValidatorCreator&quot;/&gt;
+&lt;/components&gt;
+</pre></div>
+
+<p>変換後。</p>
+<div class="source"><pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE components PUBLIC &quot;-//SEASAR//DTD S2Container 2.4//EN&quot; 
+	&quot;http://www.seasar.org/dtd/components24.dtd&quot;&gt;
+&lt;components&gt;
+  &lt;include path=&quot;customizer.dicon&quot;/&gt;
+  &lt;include path=&quot;convention.dicon&quot;/&gt;
+  &lt;component name=&quot;actionCreator&quot; class=&quot;org.seasar.framework.container.creator.ActionCreator&quot;/&gt;
+  &lt;component name=&quot;converterCreator&quot; class=&quot;org.seasar.framework.container.creator.ConverterCreator&quot;/&gt;
+  &lt;component name=&quot;daoCreator&quot; class=&quot;org.seasar.framework.container.creator.DaoCreator&quot;/&gt;
+  &lt;component name=&quot;dtoCreator&quot; class=&quot;org.seasar.framework.container.creator.DtoCreator&quot;/&gt;
+  &lt;component name=&quot;dxoCreator&quot; class=&quot;org.seasar.framework.container.creator.DxoCreator&quot;/&gt;
+  &lt;component name=&quot;helperCreator&quot; class=&quot;org.seasar.framework.container.creator.HelperCreator&quot;/&gt;
+  &lt;component name=&quot;interceptorCreator&quot; class=&quot;org.seasar.framework.container.creator.InterceptorCreator&quot;/&gt;
+  &lt;component name=&quot;logicCreator&quot; class=&quot;org.seasar.framework.container.creator.LogicCreator&quot;/&gt;
+  &lt;component name=&quot;pageCreator&quot; class=&quot;org.seasar.framework.container.creator.PageCreator&quot;/&gt;
+  &lt;component name=&quot;serviceCreator&quot; class=&quot;org.seasar.framework.container.creator.ServiceCreator&quot;/&gt;
+  &lt;component name=&quot;validatorCreator&quot; class=&quot;org.seasar.framework.container.creator.ValidatorCreator&quot;/&gt;
+&lt;!-- for bathory --&gt;
+  &lt;component name=&quot;collectorCreator&quot; class=&quot;org.seasar.bathory.extentions.seasar2.creator.CollectorCreator&quot;/&gt;
+  &lt;component name=&quot;consumerCreator&quot; class=&quot;org.seasar.bathory.extentions.seasar2.creator.ConsumerCreator&quot;/&gt;
+&lt;!-- for bathory --&gt;
+&lt;/components&gt;
+</pre></div>
+
+
+<h4>customizer.dicon</h4>
+<p>生成直後。</p>
+
+<div class="source"><pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE components PUBLIC &quot;-//SEASAR//DTD S2Container 2.4//EN&quot; 
+	&quot;http://www.seasar.org/dtd/components24.dtd&quot;&gt;
+&lt;components&gt;
+  &lt;include path=&quot;default-customizer.dicon&quot;/&gt;
+&lt;/components&gt;
+</pre></div>
+
+<p>変換後。</p>
+<div class="source"><pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE components PUBLIC &quot;-//SEASAR//DTD S2Container 2.4//EN&quot; 
+	&quot;http://www.seasar.org/dtd/components24.dtd&quot;&gt;
+&lt;components&gt;
+  &lt;include path=&quot;default-customizer.dicon&quot;/&gt;
+&lt;!-- for bathory --&gt;
+  &lt;include path=&quot;bathory-customizer.dicon&quot;/&gt;
+&lt;!-- for bathory --&gt;
+
+&lt;!-- for bathory --&gt;
+  &lt;component name=&quot;collectorCustomizer&quot; class=&quot;org.seasar.framework.container.customizer.CustomizerChain&quot;&gt;
+    &lt;initMethod name=&quot;addCustomizer&quot;&gt;
+      &lt;arg&gt;traceCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+    &lt;initMethod name=&quot;addCustomizer&quot;&gt;
+      &lt;arg&gt;statisticsCommitCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+    &lt;initMethod name=&quot;addCustomizer&quot;&gt;
+      &lt;arg&gt;requiredTxCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+  &lt;/component&gt;
+  &lt;component name=&quot;consumerCustomizer&quot; class=&quot;org.seasar.framework.container.customizer.CustomizerChain&quot;&gt;
+    &lt;initMethod name=&quot;addCustomizer&quot;&gt;
+      &lt;arg&gt;traceCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+    &lt;initMethod name=&quot;addCustomizer&quot;&gt;
+      &lt;arg&gt;requiredTxCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+    &lt;initMethod name=&quot;addCustomizer&quot;&gt;
+      &lt;arg&gt;savepointCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+    &lt;initMethod name=&quot;addCustomizer&quot;&gt;
+      &lt;arg&gt;partedCommitCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+    &lt;initMethod name=&quot;addCustomizer&quot;&gt;
+      &lt;arg&gt;statisticsCommitCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+  &lt;/component&gt;
+&lt;!-- for bathory --&gt;
+
+
+&lt;/components&gt;
+</pre></div>
+
+
+<h4>s2container.dicon</h4>
+<p>生成直後。</p>
+
+<div class="source"><pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE components PUBLIC &quot;-//SEASAR//DTD S2Container 2.4//EN&quot; 
+	&quot;http://www.seasar.org/dtd/components24.dtd&quot;&gt;
+&lt;components&gt;
+    &lt;include condition=&quot;#ENV == 'ut'&quot; path=&quot;warmdeploy.dicon&quot;/&gt;
+    &lt;include condition=&quot;#ENV == 'ct'&quot; path=&quot;hotdeploy.dicon&quot;/&gt;
+    &lt;include condition=&quot;#ENV != 'ut' and #ENV != 'ct'&quot; path=&quot;cooldeploy.dicon&quot;/&gt;
+&lt;/components&gt;
+</pre></div>
+
+<p>変換後。</p>
+<div class="source"><pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE components PUBLIC &quot;-//SEASAR//DTD S2Container 2.4//EN&quot; 
+	&quot;http://www.seasar.org/dtd/components24.dtd&quot;&gt;
+&lt;components&gt;
+    &lt;include condition=&quot;#ENV == 'ut'&quot; path=&quot;warmdeploy.dicon&quot;/&gt;
+    &lt;include condition=&quot;#ENV == 'ct'&quot; path=&quot;hotdeploy.dicon&quot;/&gt;
+    &lt;include condition=&quot;#ENV != 'ut' and #ENV != 'ct'&quot; path=&quot;cooldeploy.dicon&quot;/&gt;
+&lt;!-- for bathory --&gt;
+    &lt;component class=&quot;org.seasar.framework.container.factory.SimplePathResolver&quot;&gt;
+        &lt;initMethod name=&quot;addRealPath&quot;&gt;
+          &lt;arg&gt;&quot;j2ee.dicon&quot;&lt;/arg&gt;
+          &lt;arg&gt;&quot;bathory-j2ee.dicon&quot;&lt;/arg&gt;
+        &lt;/initMethod&gt;
+    &lt;/component&gt;
+&lt;!-- for bathory --&gt;
+&lt;/components&gt;
+</pre></div>
+
+</div><!-- section -->
+
+</div><!-- article -->
+
+</div><!-- contents_center -->
+
+<div id="footer">
+<address>&copy; Copyright The Seasar Foundation and the others 2009, all rights reserved.</address>
+<div class="line"><span class="hide">spacer</span></div>
+</div><!-- footer -->
+
+</div><!-- wrapper -->
+
+</body>
+</html>
+

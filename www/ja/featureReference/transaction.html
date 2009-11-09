@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta http-equiv="Content-Language" content="ja" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta name="keywords" content="bathory, Seasar, The Seasar Project, The Seasar Foundation, OSS, Open Source Software, Java, Batch, Framework" />
+<meta name="description" content="bathory" />
+<title>well come to bathroy project</title>
+<link rel="stylesheet" type="text/css" href="http://www.seasar.org/theme/main.css" media="screen,projection" />
+<link rel="stylesheet" type="text/css" href="http://www.seasar.org/theme/print.css" media="print" />
+</head>
+
+<body>
+
+<div id="wrapper">
+
+<div id="header">
+
+<div class="line"><span class="hide">spacer</span></div>
+
+<div id="logo"><h2 id="h01" class="hide">The Seasar Foundation Project Site</h2><img src="http://www.seasar.org/images/seasar_logo_blue.gif" alt="The Seasar Project" width="390" height="180" /></div>
+
+<div id="tool">
+
+<h2><a href="http://search.seasar.org/">Site Search</a></h2>
+
+<form id="search" name="search" action="http://search.seasar.org/">
+<div>
+	<input id="search_phrase" type="text" name="phrase" size="20" />
+	<input type="hidden" name="perpage" value="30" />
+	<input type="hidden" name="enc" value="UTF-8" />
+	<input id="search_go" type="submit" value="Search" />
+</div>
+</form>
+
+<h2>Seasar Banner</h2>
+
+<p><a href="http://www.seasar.org/images/seasar_banner.gif"><img src="http://www.seasar.org/images/seasar_banner.gif" alt="Seasar Banner" title="Seasar Banner" width="146" height="33" /></a></p>
+
+</div>
+
+</div><!-- header -->
+
+
+<div id="contents_left">
+
+
+<h2>Menu</h2>
+<ul>
+	<li><a href="./top/index.html">ホーム</a></li>
+	<li><a href="./concept/index.html">概要</a></li>
+	<li><a href="./tutorial/index.html">チュートリアル </a></li>
+	<li><a href="./featureReference/index.html">機能リファレンス</a></li>
+	<li><a href="./settingReference/index.html">設定ファイルリファレンス</a></li>
+	<li><a href="./setup/index.html">実行環境のセットアップ</a></li>
+	<li><a href="./releaseNotes/index.html">リリースノート</a></li>
+	<li><a href="./roadmap/index.html">ロードマップ</a></li>
+	<li><a href="https://www.seasar.org/svn/sandbox/bathory/trunk/bathory">SVN リポジトリブラウザ</a></li>
+</ul>
+
+
+
+</div><!-- contents_left -->
+
+
+<div id="contents_center">
+
+<div id="article">
+
+<div class="section">
+
+<h2>トランザクション</h2>
+<h3><a name="BatchTransatcion">バッチアプリケーションにおけるトランザクション</a></h3>
+<p>バッチアプリケーションでは、オンラインアプリケーションとは違った、特有のトランザクション概念が存在します。</p>
+<p>bathoryでは、以下のようなトランザクション機能をサポートします。</p>
+<ul>
+	<li>セーブポイント</li>
+	<li>コミットポイント</li>
+	<li>リトライ</li>
+	<li>リラン</li>
+</ul>
+
+
+<h3><a name="Savepoint">セーブポイント</a></h3>
+<p>セーブポイントとは、トランザクションをより細かく管理するための仕組みです。
+</p>
+
+<!-- TODO TBD
+説明をもっとリッチにする
+
+Logicial Unit of Work (LUW)
+等、説明の幅を広げる
+
+
+
+
+セーブポイントを使うと、０か１かではなく、中間的なものを定義できる
+作業単位でトランザクション探知を確保可能
+かつ、何かが起きたときに全体ロールバック可能
+
+-->
+<!--
+<p>セーブポイントとは、トランザクションにおける</p>
+<h4>トランザクション=>セーブポイントを絡めた説明？</h4>
+<p>セーブポイントを使用すると、トランザクションを部分的にロールバックできます。</p>
+-->
+
+<h3><a name="CommitPoint">コミットポイント</a></h3>
+<p>コミットポイントとは、一定処理件数毎にコミットをかける機能です。
+</p>
+<p>
+大量件数を処理バッチアプリケーションでは、途中でコミットする必要がある場合があります。
+たとえば、大量件のテーブルを一回のトランザクションで処理した場合、長時間ロックがかかり続けます。
+そのような場合、処理時間をかんがみた上で一定件数毎にコミットを行い、ロックの時間を抑えます。
+</p>
+<p>コミットポイントに正数を与えた場合、その件数毎にコミットを行います。
+コミットポイントに0以下の数を指定すると、途中でコミットは行わず、オンラインアプリケーションのようなトランザクションになります。
+起動オプションの指定方法については<a href="../settingReference/startOptions.html#AvailableOptions">指定可能な起動オプション</a>を参照。
+</p>
+<p>コミットポイントのデフォルト値と変更方法については<a href="../settingReference/applicationSettings.html">アプリケーション設定情報</a>を参照。</p>
+
+
+<h3><a name="Retry">リトライ</a></h3>
+<p>リトライとは、障害発生後、同一処理を再度実行することを言います。
+リソース競合等、一時的なリソース競合により障害が発生した場合、リトライにより正常に処理が終了する可能性があります。
+bathoryでは、障害が発生した際、セーブポイントまで処理を戻した後、指定された回数リトライを行います。
+</p>
+<p>TBD</p>
+<p>リトライ回数のデフォルト値と変更方法については<a href="../settingReference/startOptions.html#AvailableOptions">指定可能な起動オプション</a>を参照。</p>
+
+
+<h3><a name="ReRun">リラン</a></h3>
+<p>リランとは、特殊なバッチ再実行方法の一種です。
+障害が発生した一部のデータのみバッチ実行前の状態に戻し、処理を続行する必要があるバッチが存在します。
+そのようなバッチ終了後、該当する障害を除去した後、障害が発生したデータのみを対象としたジョブを実行することをリランと呼びます。
+</p>
+<!-- TODO TBD -->
+<p>リラン機能に関してはまだ未実装です。</p>
+
+
+
+</div><!-- section -->
+
+</div><!-- article -->
+
+</div><!-- contents_center -->
+
+<div id="footer">
+<address>&copy; Copyright The Seasar Foundation and the others 2009, all rights reserved.</address>
+<div class="line"><span class="hide">spacer</span></div>
+</div><!-- footer -->
+
+</div><!-- wrapper -->
+
+</body>
+</html>
